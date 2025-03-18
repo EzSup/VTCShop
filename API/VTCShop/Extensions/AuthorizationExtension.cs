@@ -48,8 +48,8 @@ namespace VTCShop.Extensions
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
-                options.AddPolicy("CustomerOnly", policy => policy.RequireClaim("Customer"));
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("CustomerOnly", policy => policy.RequireRole("Customer"));
             });
         }
     }

@@ -53,17 +53,11 @@ namespace VTCShop.Endpoints
                               return Results.BadRequest("Unsuccessful login attempt.");
                           });
 
-            group.MapDelete("logoutAdmin", async (SignInManager<ApplicationUser> signInManager) =>
+            group.MapDelete("logout", async (SignInManager<ApplicationUser> signInManager) =>
             {
                 await signInManager.SignOutAsync();
                 return Results.Ok("User logged out successfully!");
-            }).RequireAuthorization("AdminOnly");
-
-            group.MapDelete("logoutCustomer", async (SignInManager<ApplicationUser> signInManager) =>
-            {
-                await signInManager.SignOutAsync();
-                return Results.Ok("User logged out successfully!");
-            }).RequireAuthorization("CustomerOnly");
+            }).RequireAuthorization();
         }
     }
 }
