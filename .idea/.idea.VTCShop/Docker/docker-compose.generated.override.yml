@@ -1,0 +1,36 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  vtcshop:
+    build:
+      context: "C:\\Users\\opana\\RiderProjects\\B_DIPLOMA\\VTCShop"
+      dockerfile: "VTCShop/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "vtcshop:dev"
+    ports:
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:57200:57300"
+    volumes:
+    - "C:\\Users\\opana\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\opana\\RiderProjects\\B_DIPLOMA\\VTCShop\\VTCShop:/app:rw"
+    - "C:\\Users\\opana\\RiderProjects\\B_DIPLOMA\\VTCShop:/src:rw"
+    - "C:\\Users\\opana\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.2.8\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.2.7\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\opana\\AppData\\Local\\JetBrains\\Rider2024.2\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2025_3_11_16_42_19:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
