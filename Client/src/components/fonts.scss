@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://raw.githubusercontent.com/blaisck/sfwin/master/SFPro/TrueType/SFProText-Bold.ttf");
+}
+
+@mixin inter-normal {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+@mixin inter-italic {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: italic;
+}
+@mixin montserrat-normal {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+@mixin nunito-sans {
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+p,
+a,
+button,
+label,
+div {
+  @include inter-normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+}
+a {
+  text-decoration: none;
+  outline: none;
+}
+.p1 {
+  font-size: 16px;
+  line-height: 22px;
+}
+.p2 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.b1 {
+  @include montserrat-normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 36px;
+}
+.b2 {
+  @include montserrat-normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+h1 {
+  @include inter-normal;
+  font-weight: 200;
+  &.Headline {
+    @include nunito-sans;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 70px;
+  }
+}
+h2 {
+  @include inter-normal;
+  font-weight: 700;
+  &.Headline {
+    @include nunito-sans;
+    font-size: 35px;
+    line-height: 44px;
+  }
+}
+h3 {
+  @include inter-normal;
+  font-weight: 700;
+}
+h5 {
+  @include inter-normal;
+}
+
+.pargraph {
+  @include inter-normal;
+  font-weight: 400;
+  &.default {
+    font-family: "SF Pro Text";
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+.System {
+  @include inter-normal;
+  font-weight: 400;
+}
+
+.S10_L16 {
+  font-size: 10px;
+  line-height: 16px;
+}
+.S12_L20 {
+  font-size: 12px;
+  line-height: 20px;
+}
+.S18_L26 {
+  font-size: 18px;
+  line-height: 26px;
+}
+.S24_L32 {
+  font-size: 24px;
+  line-height: 32px;
+}
+.S36_L46 {
+  font-size: 36px;
+  line-height: 46px;
+}
+.S64_L78 {
+  font-size: 64px;
+  line-height: 78px;
+}
+.S72_L94 {
+  font-size: 72px;
+  line-height: 94px;
+}
+
+.bold {
+  font-weight: 700;
+}
+.italic {
+  @include inter-italic;
+}
+.UpC {
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 768px) {
+  h1.Mobile {
+    @include inter-normal;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 46px;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+  h2.Mobile {
+    @include inter-italic;
+    font-size: 40px;
+    font-weight: 200;
+    line-height: 52px;
+    letter-spacing: 0.02em;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+  h3.S26, .itemDetails_title {
+    @include inter-normal;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 32px;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+  h2.Headline{
+    font-size: 24px;
+    line-height: 32px;
+  }
+}

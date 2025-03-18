@@ -1,0 +1,201 @@
+#root {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #fafaf8;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+.Load-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 50px 0;
+  h1 {
+    width: max-content;
+    color: #cdcccc;
+  }
+  &::before {
+    background-color: #cdcccc;
+    left: 0px;
+    top: 0px;
+    content: " ";
+    position: absolute;
+    height: 100%;
+    animation: Load-anim 1s forwards infinite;
+  }
+}
+
+@keyframes Load-anim {
+  0% {
+    width: 0px;
+    left: 0px;
+  }
+  25% {
+    width: 100%;
+  }
+  75% {
+    right: 0px;
+    left: auto;
+  }
+  100% {
+    width: 0px;
+    right: 0px;
+    left: auto;
+  }
+}
+
+.advantages {
+  background: #e3e3e3;
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+  &::before {
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: url("/Dev_test-react/Rectangle_withCircles.svg");
+    background-size: contain;
+    content: " ";
+    height: 250px;
+    width: 250px;
+  }
+}
+
+.Container_ToTheRight {
+  margin-left: 11.5% !important;
+}
+.Container_OnlyTitle {
+  display: none;
+}
+
+.ContactUs_Bg {
+  background: url("/Dev_test-react/Contact/Hero_banner.png") no-repeat bottom
+      right,
+    #b7b7b7;
+  height: 500px;
+  background-position: 90% 50px;
+  background-size: 415px;
+  .HeroSection_title {
+    margin: 5% auto 0;
+    h1 {
+      color: white;
+    }
+  }
+}
+.AboutUs_Bg {
+  background: url("/Dev_test-react/BannerPhoto2.png") no-repeat center center,
+    linear-gradient(180deg, rgba(212, 211, 208) 72%, rgba(209, 205, 196) 75%);
+}
+.Collection_Bg {
+  background: url("/Dev_test-react/BannerPhoto3.png") no-repeat bottom center;
+  background-size: auto 100%;
+  height: 600px;
+  .HeroSection_title {
+    margin: 10% 0 0 60%;
+    h1 {
+      color: #000000;
+    }
+  }
+}
+
+@media (pointer: coarse) {
+  body {
+    overflow-x: hidden;
+  }
+  html {
+    background: #000;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .Collection_Bg {
+    background-size: 100% auto;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .advantages {
+    &::before {
+      left: -60px;
+      transform: translate(-50%, -50%) rotate(20deg);
+      height: 280px;
+      width: 280px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .advantages {
+    height: max-content;
+  }
+  .Collection_Bg {
+    z-index: 2;
+    .HeroSection_title {
+      margin: 10% 0 0 40%;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .Container_ToTheRight {
+    margin-left: auto !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ContactUs_Bg{
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .Collection_Bg {
+    background: #e3e3e3 url("/Dev_test-react/Collection/man-port1.png");
+    height: 700px;
+    background-size: auto 80%;
+    background-position: top center;
+    justify-content: flex-end;
+    background-repeat: no-repeat;
+    .HeroSection_title {
+      margin: 0% 0 4% 10%;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .Collection_Bg .HeroSection_title {
+    margin: 0% 0 6% 10%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .Collection_Bg {
+    background: #e3e3e3 url("/Dev_test-react/Collection/man-port1.png");
+    height: 430px;
+    background-size: 430px auto;
+    background-repeat: no-repeat;
+    background-position: top center;
+    .HeroSection_title {
+      margin: 0% 0 0% 10%;
+    }
+  }
+}

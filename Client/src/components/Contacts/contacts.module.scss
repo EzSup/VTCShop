@@ -1,0 +1,143 @@
+.contactsSection {
+  display: flex;
+  align-items: center;
+  padding: 50px 0;
+  .contacts_wrap {
+    display: flex;
+    width: 77%;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1100px;
+    .block {
+      box-shadow: 0px 0px 42px 0px #0000000f;
+      width: 850px;
+      background: #ffffff;
+      margin: 25px 0;
+      padding: 25px 0;
+    }
+  }
+  .textBox {
+    text-align: center;
+  }
+  .imageBlock {
+    height: 28px;
+    width: 60px;
+    img {
+      transform: scaleX(0.7);
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .email,
+  .adress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      margin: 10px 0;
+    }
+    p,
+    a {
+      color: #606060;
+    }
+  }
+  .email .textBlock {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 60%;
+    justify-content: space-around;
+    align-content: space-between;
+    align-items: center;
+    height: 140px;
+    p,
+    a {
+      text-decoration: none;
+      width: 45%;
+    }
+  }
+  .adress .textBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    p {
+      margin: 2px 0;
+    }
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .contactsSection {
+    .email .textBlock {
+      width: 70%;
+    }
+    .contacts_wrap {
+      .block {
+        width: 700px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contactsSection {
+    .email .textBlock {
+      width: 85%;
+      a {
+        margin: 5px 0;
+      }
+    }
+    .contacts_wrap {
+      .block {
+        width: 500px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .contactsSection {
+    .email .textBlock {
+      width: 95%;
+    }
+    .contacts_wrap {
+      width: 90%;
+      .block {
+        width: 400px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .contactsSection {
+    .adress {
+      width: 90%;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .email .textBlock {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      height: max-content;
+      p,
+      a {
+        width: 100%;
+        text-align: center;
+      }
+      p {
+        margin: 8px 0 2px;
+      }
+      a {
+        margin: 2px 0 5px;
+      }
+    }
+    .contacts_wrap {
+      .block {
+        width: 100%;
+      }
+    }
+  }
+}

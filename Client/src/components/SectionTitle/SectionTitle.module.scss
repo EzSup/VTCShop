@@ -1,0 +1,85 @@
+.title {
+  padding: 0 5%;
+  .title-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .caption h3 {
+    color: #212322;
+    margin: 5px 0;
+    white-space: nowrap;
+  }
+  a {
+    color: #212322;
+    position: relative;
+    transition: all 0.5s;
+    padding: 5px 30px 5px 0px;
+    left: 0px;
+    &::before {
+      position: absolute;
+      content: " ";
+      background: url("/Dev_test-react/Ic_Arrow_Right.svg");
+      right: 0px;
+      bottom: 45%;
+      transform: translateY(50%);
+      width: 20px;
+      height: 100%;
+      transition: all 0.5s;
+    }
+    &:hover {
+      left: 5px;
+      color: #21232299;
+      &::before {
+        right: 10px;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.arrow {
+  position: absolute;
+  content: " ";
+  bottom: 0px;
+  width: 100%;
+  height: 0px;
+  border: 1px solid #e0dbcf;
+  background-size: contain;
+  &::before,
+  &::after {
+    position: absolute;
+    content: " ";
+    transform: translateY(-50%);
+  }
+  &::before {
+    left: -6px;
+    width: 12px;
+    height: 12px;
+    background: url("/Dev_test-react/Title_Arrow.svg") no-repeat left center;
+  }
+  &::after {
+    right: -4px;
+    width: 9px;
+    height: 16px;
+    background: url("/Dev_test-react/Title_Arrow.svg") no-repeat right center;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .title.strong_title {
+    .title-wrap {
+      flex-direction: column;
+    }
+    a {
+      padding: 5px 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .title a::before{
+    height: 101%;
+  }
+}

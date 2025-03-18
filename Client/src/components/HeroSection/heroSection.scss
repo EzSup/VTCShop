@@ -1,0 +1,99 @@
+.hero-section {
+  background: #e3e3e3 url("/Dev_test-react/BannerPhoto1.png") no-repeat 100%
+    100%;
+  width: 100%;
+  height: 818px;
+  background-size: contain;
+  justify-content: center;
+  align-items: flex-start;
+  .text_with-button {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .container {
+    width: 550px;
+    height: 440px;
+    margin-left: 5%;
+    background: #efefef33;
+    border-radius: 10px;
+    padding: 5px 0;
+    .title {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0px;
+    }
+    .bold_text {
+      margin: 0;
+      text-transform: uppercase;
+      vertical-align: middle;
+      display: flex;
+      width: max-content;
+    }
+    .italic {
+      margin: -2% 20px 0 40px;
+      text-transform: uppercase;
+    }
+    .subtext {
+      margin: 0 20px 0 0;
+      p {
+        color: #605e5c;
+        margin: 40px 0 50px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .hero-section {
+    background-size: 150% auto;
+    .container {
+      margin: 0 auto;
+      width: 700px;
+      background: rgb(228 228 228 / 70%);
+      .bold_text {
+        margin-right: 20px;
+      }
+      .italic {
+        margin: -2% 20px 0 0px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero-section {
+    height: 680px;
+    .text_with-button {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+    .container {
+      margin: 0 auto 20%;
+      width: 90%;
+      max-width: 450px;
+      min-height: 300px;
+      height: max-content;
+      .bold_text {
+        margin-right: 10px;
+      }
+      .italic {
+        margin: -1% 20px 0 0px;
+      }
+      .subtext p {
+        margin: 10px 0 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .hero-section {
+    height: 500px;
+    .container {
+      margin: 0 auto;
+    }
+  }
+}

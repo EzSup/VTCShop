@@ -1,0 +1,323 @@
+.shopSection {
+  padding: 3%;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+  .filters-container {
+    height: 160px;
+    margin: 0 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .items {
+    display: flex;
+    height: 100%;
+    max-height: 1260px;
+    overflow: hidden;
+    flex-direction: column;
+    transition: all 0.5s;
+    &.items-expanded {
+      max-height: 3170px;
+    }
+  }
+  .items_more {
+    margin: 0 auto;
+  }
+}
+
+.shopSection .Collection {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  .item {
+    margin: 15px 8px;
+    width: 430px;
+    height: max-content;
+    .preview {
+      height: 540px;
+    }
+    .preview-image div {
+      background-size: 100% auto;
+    }
+    .sizelist {
+      display: none;
+    }
+    .hover_container .button {
+      width: 100%;
+    }
+  }
+}
+
+.filtration,
+.sorting {
+  display: flex;
+  justify-content: space-between;
+  .frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    width: 600px;
+    .scrollbar {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+.shopSection .hover_container button {
+  padding: 0px 0 4px;
+  span {
+    font-size: 30px;
+    color: #f1f1f1;
+    position: relative;
+    bottom: -3px;
+    font-weight: 200;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .shopSection {
+    .Collection .item {
+      width: 350px;
+      .preview {
+        height: 450px;
+      }
+    }
+    .items {
+      max-height: 1080px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .shopSection {
+    padding: 2%;
+    .filters-container {
+      flex-wrap: wrap;
+    }
+    .Collection .item {
+      width: 300px;
+      margin: 10px 3px;
+      .preview-image div {
+        background-size: auto 100%;
+      }
+    }
+    .items {
+      max-height: 1050px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .shopSection {
+    //sizes
+    padding: 2% 0;
+    .filters-container {
+      height: 350px;
+      margin: 0 0px 20px 8px;
+      padding-left: 2%;
+      position: relative;
+    }
+    .Collection {
+      justify-content: space-evenly;
+      .item .preview-image div {
+        background-size: auto 100%;
+      }
+    }
+    .items {
+      max-height: 1580px;
+      padding: 0 2%;
+      &.items-expanded {
+        max-height: 4210px;
+      }
+    }
+  }
+  .filtration {
+    //filtration settings
+    width: 100%;
+    .frame {
+      width: 100%;
+    }
+    .filters {
+      width: 100%;
+      height: 135px;
+      overflow: scroll hidden;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar {
+        width: max-content;
+        display: flex;
+        justify-content: space-around;
+        height: 60px;
+        .filter:last-child {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+  .sorting {
+    //sorting settings
+    width: 100%;
+    .frame {
+      height: 170px;
+    }
+  }
+
+  .shopSection {
+    //before, after el
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    .filters-container,
+    .items,
+    .items_more {
+      z-index: 1;
+    }
+    &::before,
+    &::after {
+      position: absolute;
+      content: " ";
+      background: url("/Dev_test-react/Rectangle_withCircles.svg") no-repeat
+        center center;
+      background-size: contain;
+      z-index: -1;
+    }
+    &::before {
+      width: 300px;
+      height: 300px;
+      right: -150px;
+      top: -80px;
+      transform: rotate(77deg);
+    }
+    &::after {
+      width: 280px;
+      height: 280px;
+      left: 40%;
+      top: 100px;
+      transform: rotate(20deg);
+    }
+  }
+}
+
+.show_filters {
+  display: none;
+}
+
+@media screen and (max-width: 640px) {
+  .shopSection {
+    .filters-container {
+      align-content: flex-start;
+      overflow: hidden;
+      transition: all 1s;
+      &.hidden {
+        height: 0px;
+      }
+      &.showed {
+        height: 460px;
+      }
+    }
+    .show_filters {
+      width: 100%;
+      display: flex;
+      margin: 20px 0;
+      justify-content: center;
+      &.clicked button {
+        width: 94% !important;
+        &::before {
+          transform: translateY(5px) !important;
+        }
+      }
+      button:hover {
+        transform: translateY(0px);
+        opacity: 1;
+        &::before {
+          transform: translateY(0px);
+        }
+      }
+    }
+    .items {
+      max-height: max-content;
+      margin-bottom: 20px;
+    }
+    .items_more {
+      display: none;
+    }
+    .Collection {
+      .item {
+        min-width: 164px;
+        width: 164px;
+        .preview {
+          height: 218px;
+        }
+      }
+    }
+  }
+  .filtration {
+    height: max-content;
+    .filters,
+    .frame {
+      height: max-content;
+      .scrollbar {
+        height: 176px;
+      }
+    }
+  }
+  .sorting {
+    .frame {
+      width: 96.5%;
+      height: max-content;
+    }
+    .filter {
+      width: 100%;
+      .dropdown-list {
+        width: 100%;
+        .radioInputs {
+          flex-direction: row;
+          flex-wrap: wrap;
+          width: 60%;
+          margin: 0 auto;
+          justify-content: space-evenly;
+          label {
+            width: 150px;
+            align-items: center;
+            margin: 5px 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .filtration .filters .scrollbar,
+  .filtration .frame .scrollbar {
+    height: 200px;
+  }
+  .shopSection .filters-container.showed {
+    height: 505px;
+  }
+  .sorting .filter .dropdown-list {
+    height: 120px;
+    &.hidden {
+      height: 0px;
+    }
+    .radioInputs {
+      width: 270px;
+      height: max-content;
+    }
+  }
+}
+
+@media screen and (max-width: 355px) {
+  .shopSection .Collection .item {
+    min-width: 145px;
+    width: 145px;
+  }
+}
