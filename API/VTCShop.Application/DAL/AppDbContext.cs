@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using VTCShop.Application.DAL.Configurations;
 using VTCShop.Application.DAL.Models;
 namespace VTCShop.Application.DAL
 {
@@ -18,29 +19,10 @@ namespace VTCShop.Application.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Category>()
-                        .HasIndex(c => c.Name)
-                        .IsUnique();
-
-            modelBuilder.Entity<Product>()
-                        .HasOne(p => p.Category)
-                        .WithMany(c => c.Products)
-                        .HasForeignKey(p => p.CategoryId);
-
-            modelBuilder.Entity<Order>()
-                        .HasOne(o => o.User)
-                        .WithMany(u => u.Orders)
-                        .HasForeignKey(o => o.UserId);
-
-            modelBuilder.Entity<OrderItem>()
-                        .HasOne(oi => oi.Order)
-                        .WithMany(o => o.OrderItems)
-                        .HasForeignKey(oi => oi.OrderId);
-
-            modelBuilder.Entity<OrderItem>()
-                        .HasOne(oi => oi.Product)
-                        .WithMany(p => p.OrderItems)
-                        .HasForeignKey(oi => oi.ProductId);
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
         }
     }
 }
