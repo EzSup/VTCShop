@@ -1,9 +1,19 @@
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
+using System.Reflection;
 using VTCShop.Application.DAL;
+using VTCShop.Application.Mapping;
 using VTCShop.Endpoints;
 using VTCShop.Extensions;
+using VTCShop.Infrastructure.Options;
+using VTCShop.Infrastructure.Services;
 namespace VTCShop
 {
     public class Program
@@ -14,12 +24,34 @@ namespace VTCShop
 
             builder.Services.AddOpenApi();
             builder.Services.AddLoggingServices();
+            builder.Services.AddAntiforgery();
+            
+            TypeAdapterConfig.GlobalSettings.Apply(new MappingConfig());
 
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddCustomAuthorization();
 
+            builder.Services.Configure<S3Options>(builder.Configuration.GetSection("AWS"));
+            builder.Services.AddScoped<IAmazonS3>(sp =>
+            {
+                return new AmazonS3Client(
+                    builder.Configuration["AWS:AccessKey"],
+                    builder.Configuration["AWS:SecretKey"],
+                    Amazon.RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"]));
+                
+                var s3Options = sp.GetRequiredService<IOptions<S3Options>>().Value;
+
+                var awsOptions = new AWSOptions
+                {
+                    Credentials = new BasicAWSCredentials(s3Options.AccessKey, s3Options.SecretKey),
+                    Region = RegionEndpoint.GetBySystemName(s3Options.Region)
+                };
+                return new AmazonS3Client(awsOptions.Credentials, awsOptions.Region);
+            });
+            
+            builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
 
             var app = builder.Build();
@@ -31,20 +63,6 @@ namespace VTCShop
             }
 
             app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-
-            app.Use(async (context, next) =>
-            {
-                var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Request Path: {Path}", context.Request.Path);
-                logger.LogInformation("IsAuthenticated: {IsAuthenticated}", context.User.Identity?.IsAuthenticated);
-                logger.LogInformation("Authentication Type: {AuthType}", context.User.Identity?.AuthenticationType);
-
-                await next();
-            });
-
-            app.UseAuthorization();
 
             using (var scope = app.Services.CreateScope())
             {
@@ -63,7 +81,6 @@ namespace VTCShop
                 }
             }
 
-            // app.MapIdentityApi<ApplicationUser>().WithOpenApi();
             app.MapProductEndpoint();
             app.MapCategoryEndpoint();
             app.MapAuthorizationEndpoint();

@@ -21,19 +21,19 @@ namespace VTCShop.Endpoints
             {
                 await service.Create(request);
                 return Results.Ok();
-            });
+            }).RequireAuthorization("AdminOnly");
 
             group.MapPut("", async (ICategoryService service, CategoryUpdateRequest request) =>
             {
                 await service.Update(request);
                 return Results.Ok();
-            });
+            }).RequireAuthorization("AdminOnly");
 
             group.MapDelete("", async (ICategoryService service, int id) =>
             {
                 await service.Delete(id);
                 return Results.Ok();
-            });
+            }).RequireAuthorization("AdminOnly");
 
             group.MapGet("", async (ICategoryService service, int id)
                              => Results.Ok(await service.GetCategoryById(id)))

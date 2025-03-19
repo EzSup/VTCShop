@@ -18,10 +18,8 @@ namespace VTCShop.Application.DAL.Models
 
         public int Stock { get; set; } = 0;
 
-        public string? ImageUrl { get; set; }
-
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
 
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
