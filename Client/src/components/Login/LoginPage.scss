@@ -5,7 +5,7 @@
     align-items: center;
     .login_wrap{
         width: 370px;
-        height: 300px;
+        height: max-content;
         border-radius: 15px;
         background: #e3e3e3;
         position: relative;
@@ -61,6 +61,7 @@
 
 .form_submit{
     width: 100%;
+    margin: 5px 0;
     button{
         width: 100%;
         padding: 7px;
