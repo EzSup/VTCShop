@@ -67,7 +67,8 @@ const Header = () => {
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="search"
               />
-              <HeaderHref
+              <HeaderHref 
+                Href="/login/" 
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="user"
               />
