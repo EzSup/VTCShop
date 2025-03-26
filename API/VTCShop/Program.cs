@@ -1,13 +1,9 @@
 using Amazon;
-using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime;
 using Amazon.S3;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
-using System.Reflection;
 using VTCShop.Application.DAL;
 using VTCShop.Application.Mapping;
 using VTCShop.Endpoints;
@@ -25,8 +21,10 @@ namespace VTCShop
             builder.Services.AddOpenApi();
             builder.Services.AddLoggingServices();
             builder.Services.AddAntiforgery();
-            
+
             TypeAdapterConfig.GlobalSettings.Apply(new MappingConfig());
+
+            var constring = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -39,18 +37,9 @@ namespace VTCShop
                 return new AmazonS3Client(
                     builder.Configuration["AWS:AccessKey"],
                     builder.Configuration["AWS:SecretKey"],
-                    Amazon.RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"]));
-                
-                var s3Options = sp.GetRequiredService<IOptions<S3Options>>().Value;
-
-                var awsOptions = new AWSOptions
-                {
-                    Credentials = new BasicAWSCredentials(s3Options.AccessKey, s3Options.SecretKey),
-                    Region = RegionEndpoint.GetBySystemName(s3Options.Region)
-                };
-                return new AmazonS3Client(awsOptions.Credentials, awsOptions.Region);
+                    RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"]));
             });
-            
+
             builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
 
