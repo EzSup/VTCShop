@@ -1,0 +1,73 @@
+.login_container{
+    display: flex;
+    margin: 20px auto;
+    width: 90%;
+    align-items: center;
+    .login_wrap{
+        width: 370px;
+        height: max-content;
+        border-radius: 15px;
+        background: #e3e3e3;
+        position: relative;
+        overflow: hidden;
+        padding: 20px 10px;
+        display: flex;
+        justify-content: center;
+        z-index: 1;
+        &::before{
+            position: absolute;
+            background: #fafaf88c url(/Dev_test-react/Rectangle_withCircles.svg);
+            content: " ";
+            width: 400px;
+            height: 400px;
+            background-size: contain;
+            right: -110px;
+            top: -115px;
+            transform: rotate(159deg);
+            z-index: -1;
+        }
+        &::after{
+            position: absolute;
+            background: url(/Dev_test-react/Rectangle_withCircles.svg) no-repeat center center;
+            content: " ";
+            width: 200px;
+            height: 200px;
+            background-size: contain;
+            left: -80px;
+            bottom: -110px;
+            z-index: -1;
+        }
+    }
+}
+
+.login_wrap form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: max-content;
+    ._input{
+        margin: 10px 0;
+        width: 100%;
+        label{
+            color: #919191;
+        }
+        input{
+            border-width: 0px 0px 2px;
+            color: #000;
+        }
+    }
+}
+
+.form_submit{
+    width: 100%;
+    margin: 5px 0;
+    button{
+        width: 100%;
+        padding: 7px;
+        background: #c0c0c0;
+        &::before{
+            background: rgb(192 192 192 / 45%);
+        }
+    }
+}

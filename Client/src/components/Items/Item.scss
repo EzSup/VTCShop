@@ -180,6 +180,9 @@
 @media screen and (max-width: 768px) {
   .item {
     min-width: 250px;
+    .description .button{
+      display: block;
+    }
     .preview {
       height: 350px;
       .preview-image,
@@ -187,6 +190,9 @@
         border-radius: 6px;
       }
     }
+  }
+  .hover_container{
+    display: none;
   }
 }
 
