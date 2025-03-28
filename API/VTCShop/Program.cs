@@ -40,6 +40,14 @@ namespace VTCShop
                     RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"]));
             });
 
+            builder.Services.AddCors(x =>
+                                         x.AddDefaultPolicy(options => 
+                                                                options
+                                                                       .WithOrigins("http://localhost:5173")
+                                                                       .AllowAnyMethod()
+                                                                       .AllowAnyHeader()
+                                                                       .AllowCredentials()));
+
             builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
 
@@ -50,6 +58,8 @@ namespace VTCShop
                 app.MapOpenApi();
                 app.MapScalarApiReference();
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 
