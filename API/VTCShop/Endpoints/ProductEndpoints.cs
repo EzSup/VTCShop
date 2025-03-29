@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using VTCShop.Application.Domain.Services;
+using VTCShop.Application.DTOs;
 using VTCShop.Contracts;
 namespace VTCShop.Endpoints
 {
@@ -24,26 +24,34 @@ namespace VTCShop.Endpoints
                      var result = await productService.GetById(id);
                      return Results.Ok(result);
                  })
-                 .Produces<ProductInListResponse>();
+                 .Produces<ProductResponse>();
 
-            group.MapGet("/list", async (IProductService productService, int pageNumber, int pageSize) =>
+            group.MapPost("/list", async ([FromServices]IProductService productService, [FromQuery]int? pageNumber, [FromQuery]int? pageSize, [FromBody]PersonFiltrationDTO filtrationDto) =>
                  {
-                     var result = await productService.GetPaged(pageNumber, pageSize);
-                     return Results.Ok(result);
+                     var result = await productService.GetFiltered(pageNumber ?? 1, pageSize ?? 10, filtrationDto);
+                     return Results.Ok(result.ToArray());
                  })
-                 .Produces<IEnumerable<ProductInListResponse>>();
+                 .Produces<ProductInListResponse[]>();
 
             group.MapPost("", async (IProductService productService, ProductCreateRequest request) =>
+                 {
+                     var result = await productService.Create(request);
+                     return Results.Ok(result);
+                 })
+                 .Produces<int>()
+                 .RequireAuthorization("AdminOnly");
+
+            group.MapPut("", async (IProductService productService, ProductUpdateRequest request) =>
             {
-                await productService.Create(request);
+                await productService.Update(request);
                 return Results.Ok();
             }).RequireAuthorization("AdminOnly");
-            
-            group.MapPut("addImage", async (IProductService productService, int productId, [FromForm]IFormFile image) =>
-                {
-                    await productService.UpdateImage(productId, image);
-                    return Results.Ok();
-                })
+
+            group.MapPatch("addImage", async (IProductService productService, int productId, [FromForm]IFormFile image) =>
+                 {
+                     await productService.UpdateImage(productId, image);
+                     return Results.Ok();
+                 })
                  .DisableAntiforgery()
                  .RequireAuthorization("AdminOnly");
 

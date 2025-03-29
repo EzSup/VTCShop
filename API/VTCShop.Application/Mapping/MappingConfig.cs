@@ -13,6 +13,10 @@ namespace VTCShop.Application.Mapping
                   .Map(dest => dest.Title, src => src.Name)
                   .Map(dest => dest.Price, src => src.Price)
                   .TwoWays();
+
+            config.NewConfig<ProductUpdateRequest, Product>()
+                  .Map(dest => dest.Id, src => src.id)
+                  .TwoWays();
         }
     }
 }

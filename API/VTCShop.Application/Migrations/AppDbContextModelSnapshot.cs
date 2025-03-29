@@ -246,7 +246,7 @@ namespace VTCShop.Application.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("VTCShop.Application.DAL.Models.Order", b =>
@@ -278,7 +278,7 @@ namespace VTCShop.Application.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderItem", b =>
@@ -299,7 +299,7 @@ namespace VTCShop.Application.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("VTCShop.Application.DAL.Models.Product", b =>
@@ -334,7 +334,7 @@ namespace VTCShop.Application.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

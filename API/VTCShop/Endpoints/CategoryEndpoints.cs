@@ -18,10 +18,12 @@ namespace VTCShop.Endpoints
         private static RouteGroupBuilder BuildGroup(this RouteGroupBuilder group)
         {
             group.MapPost("", async (ICategoryService service, CategoryCreateRequest request) =>
-            {
-                await service.Create(request);
-                return Results.Ok();
-            }).RequireAuthorization("AdminOnly");
+                 {
+                     var result = await service.Create(request);
+                     return Results.Ok(result);
+                 })
+                 .Produces<int>()
+                 .RequireAuthorization("AdminOnly");
 
             group.MapPut("", async (ICategoryService service, CategoryUpdateRequest request) =>
             {
