@@ -62,7 +62,19 @@ namespace VTCShop.Application.BLL
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CartItemResponse>> GetCartItems(int userId)
+        public async Task UpdateCartItemQuantity(int userId, int productId, int newQuantity)
+        {
+            var userCartItem = await _context.UserCartItems
+                                             .FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == productId);
+            if (userCartItem == null)
+                return;
+
+            userCartItem.Quantity = newQuantity;
+            _context.UserCartItems.Update(userCartItem);
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task<IEnumerable<CartItemResponse>> GetCartItems(int userId)
         {
             var result = await _context.UserCartItems
                                        .AsNoTracking()
@@ -81,6 +93,17 @@ namespace VTCShop.Application.BLL
 
             var mapped = result.Adapt<IEnumerable<CartItemResponse>>();
             return mapped;
+        }
+
+        public async Task<CartResponse> GetCart(int userId)
+        {
+            var items = await GetCartItems(userId);
+            var cart = new CartResponse
+            {
+                CartItems = items.ToArray(),
+                TotalPrice = items.Sum(x => x.Sum)
+            };
+            return cart;
         }
     }
 }
