@@ -1,7 +1,9 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using VTCShop.Application.Contracts.Auth;
 using VTCShop.Application.DAL.Models;
+using VTCShop.Application.Helpers;
 namespace VTCShop.Endpoints
 {
     public static class AuthorizationEndpoints
@@ -58,6 +60,15 @@ namespace VTCShop.Endpoints
                 await signInManager.SignOutAsync();
                 return Results.Ok("User logged out successfully!");
             }).RequireAuthorization();
+
+            group.MapGet("me", async (ClaimsPrincipal User, UserManager<ApplicationUserEntity> userManager) =>
+                 {
+                     var id = User.GetUserId();
+                     var userData = await userManager.FindByIdAsync(id.ToString());
+                     return Results.Ok(userData.Adapt<MeResponse>());
+                 })
+                 .RequireAuthorization()
+                 .Produces<MeResponse>();
         }
     }
 }
