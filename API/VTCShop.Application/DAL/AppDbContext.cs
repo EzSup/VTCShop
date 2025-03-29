@@ -14,6 +14,7 @@ namespace VTCShop.Application.DAL
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<OrderItemEntity> OrderItems { get; set; }
+        public DbSet<UserCartItemEntity> UserCartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace VTCShop.Application.DAL
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCartItemConfiguration());
         }
     }
 }

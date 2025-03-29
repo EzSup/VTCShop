@@ -41,12 +41,12 @@ namespace VTCShop
             });
 
             builder.Services.AddCors(x =>
-                                         x.AddDefaultPolicy(options => 
+                                         x.AddDefaultPolicy(options =>
                                                                 options
-                                                                       .WithOrigins("http://localhost:5173")
-                                                                       .AllowAnyMethod()
-                                                                       .AllowAnyHeader()
-                                                                       .AllowCredentials()));
+                                                                    .WithOrigins("http://localhost:5173")
+                                                                    .AllowAnyMethod()
+                                                                    .AllowAnyHeader()
+                                                                    .AllowCredentials()));
 
             builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
@@ -83,7 +83,7 @@ namespace VTCShop
             app.MapProductEndpoint();
             app.MapCategoryEndpoint();
             app.MapAuthorizationEndpoint();
-
+            app.MapCartEndpoint();
 
             app.Run();
         }

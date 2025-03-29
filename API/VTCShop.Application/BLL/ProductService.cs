@@ -27,6 +27,7 @@ namespace VTCShop.Application.BLL
         public async Task<IEnumerable<ProductInListResponse>> GetPaged(int pageNumber, int pageSize)
         {
             var result = await _context.Products
+                                       .AsNoTracking()
                                        .Skip((pageNumber-1) * pageSize)
                                        .Take(pageSize)
                                        .ToListAsync();
@@ -89,7 +90,7 @@ namespace VTCShop.Application.BLL
 
         public async Task<IEnumerable<ProductInListResponse>> GetFiltered(int pageNumber, int pageSize, PersonFiltrationDTO filtrationDto)
         {
-            var query = _context.Products.AsQueryable();
+            var query = _context.Products.AsNoTracking().AsQueryable();
 
             if (filtrationDto.categoriesIds.Length > 0)
             {

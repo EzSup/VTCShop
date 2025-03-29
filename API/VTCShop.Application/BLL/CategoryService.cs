@@ -24,6 +24,7 @@ namespace VTCShop.Application.BLL
         public async Task<IEnumerable<CategoryResponse>> GetCategories(int pageSize, int pageNumber)
         {
             var result = await _context.Categories
+                                       .AsNoTracking()
                                        .Skip(pageSize * (pageNumber-1))
                                        .Take(pageSize)
                                        .ToListAsync();
