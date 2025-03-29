@@ -27,7 +27,7 @@ namespace VTCShop.Extensions
                         };
                     });
 
-            services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+            services.AddIdentity<ApplicationUserEntity, IdentityRole<int>>(options =>
                     {
                         options.Password = new PasswordOptions
                         {

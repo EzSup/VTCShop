@@ -50,7 +50,7 @@ namespace VTCShop.Application.BLL
 
         public async Task<int> Create(ProductCreateRequest request)
         {
-            var product = request.Adapt<Product>();
+            var product = request.Adapt<ProductEntity>();
             product.Category = await _context.Categories.FindAsync(request.CategoryId);
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();

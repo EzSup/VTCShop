@@ -19,11 +19,11 @@ namespace VTCShop.Endpoints
 
         private static void BuildGroup(this RouteGroupBuilder group)
         {
-            group.MapPost("register", async (UserManager<ApplicationUser> userManager,
-                              SignInManager<ApplicationUser> signInManager,
+            group.MapPost("register", async (UserManager<ApplicationUserEntity> userManager,
+                              SignInManager<ApplicationUserEntity> signInManager,
                               RegisterRequest request) =>
                           {
-                              var user = request.Adapt<ApplicationUser>();
+                              var user = request.Adapt<ApplicationUserEntity>();
                               user.UserName = request.Email;
                               var registerResult = await userManager.CreateAsync(user, request.Password);
 
@@ -37,8 +37,8 @@ namespace VTCShop.Endpoints
                               return Results.BadRequest(registerResult.Errors);
                           });
 
-            group.MapPost("login", async (UserManager<ApplicationUser> userManager,
-                              SignInManager<ApplicationUser> signInManager,
+            group.MapPost("login", async (UserManager<ApplicationUserEntity> userManager,
+                              SignInManager<ApplicationUserEntity> signInManager,
                               LogInRequest request) =>
                           {
                               var user = await userManager.FindByEmailAsync(request.Username);
@@ -53,7 +53,7 @@ namespace VTCShop.Endpoints
                               return Results.BadRequest("Unsuccessful login attempt.");
                           });
 
-            group.MapDelete("logout", async (SignInManager<ApplicationUser> signInManager) =>
+            group.MapDelete("logout", async (SignInManager<ApplicationUserEntity> signInManager) =>
             {
                 await signInManager.SignOutAsync();
                 return Results.Ok("User logged out successfully!");

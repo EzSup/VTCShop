@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using VTCShop.Application.DAL.Models.Enum;
 namespace VTCShop.Application.DAL.Models
 {
-    public class Product
+    public class ProductEntity
     {
         public int Id { get; set; }
 
@@ -19,9 +20,10 @@ namespace VTCShop.Application.DAL.Models
         public int Stock { get; set; } = 0;
 
         public int? CategoryId { get; set; }
-        public Category? Category { get; set; }
+        public IEnumerable<SizeEnum> AvailableSizes { get; set; } = [];
+        public CategoryEntity? Category { get; set; }
 
-        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public List<OrderItemEntity> OrderItems { get; set; } = new List<OrderItemEntity>();
     }
 
 }

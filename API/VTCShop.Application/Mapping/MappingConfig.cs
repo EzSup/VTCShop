@@ -8,13 +8,13 @@ namespace VTCShop.Application.Mapping
 
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<Product, ProductInListResponse>()
+            config.NewConfig<ProductEntity, ProductInListResponse>()
                   .Map(dest => dest.ImageLink, src => src.ImageKey)
                   .Map(dest => dest.Title, src => src.Name)
                   .Map(dest => dest.Price, src => src.Price)
                   .TwoWays();
 
-            config.NewConfig<ProductUpdateRequest, Product>()
+            config.NewConfig<ProductUpdateRequest, ProductEntity>()
                   .Map(dest => dest.Id, src => src.id)
                   .TwoWays();
         }

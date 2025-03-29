@@ -6,6 +6,6 @@ namespace VTCShop.Application.DTOs
         public int[] categoriesIds { get; set; } = [];
         public decimal maxPrice { get; set; } = decimal.MaxValue;
         public decimal minPrice { get; set; } = decimal.MinValue;
-        public SizeEnum[] sizes { get; set; } = Array.Empty<SizeEnum>();
+        // public SizeEnum[] sizes { get; set; } = Array.Empty<SizeEnum>();
     }
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace VTCShop.Application.DAL.Models
 {
-    public class Category
+    public class CategoryEntity
     {
         public int Id { get; set; }
 
@@ -11,6 +11,6 @@ namespace VTCShop.Application.DAL.Models
 
         public string? Description { get; set; }
 
-        public List<Product> Products { get; set; } = new List<Product>();
+        public List<ProductEntity> Products { get; set; } = new List<ProductEntity>();
     }
 }
