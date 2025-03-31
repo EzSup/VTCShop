@@ -8,7 +8,7 @@ import LoginPage from "./components/Login/LoginPage";
 
 const App = () => {
   return (
-      <Router basename="/Dev_test-react">
+      <Router basename="/Dev_test-react/">
         <Routes>
           <Route path="/" element={<Root />} />
           <Route path="/About" element={<AboutUs />} />
