@@ -6,6 +6,7 @@ import {
   Loading,
   Button,
   Message,
+  useApiRequest
 } from "../Components";
 import GetData from "../GetData";
 import Item from "../Items/Item";
@@ -132,79 +133,81 @@ const ItemDescription = ({ item }) => {
   );
 };
 
+
 const AddToCard = ({ item, size }) => {
-  const [count, SetCount] = useState(1);
+  const {request} = useApiRequest();
+  const [count, setCount] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
 
-  const HandleButtonAdd = () => {
-    SetCount(count + 1);
+  const apiUrl = "https://localhost:5000/cart";
+
+  const updateCart = async (method, body = null, query = "") => {
+    const data = await request({
+      url: `${apiUrl}${query}`,
+      method: method,
+      body: body,
+    });
+
+    if (!data) throw new Error("Cart request failed");
+    return data;
+  }
+
+  const handleAddToCart = async () => {
+    if (!size) return;
+
+    const data = await updateCart("POST", {
+      productId: item.id,
+      quantity: count,
+    });
+
+    if (data) {
+      setModalText("✅ Item added to cart!");
+      setModalOpen(true);
+    }
   };
 
-  const HandleButtonSubtract = () => {
-    SetCount(count - 1);
+  const handleUpdateQuantity = async (newCount) => {
+    if (newCount < 1) {
+      await handleRemoveFromCart();
+      return;
+    }
+
+    const data = await updateCart("PATCH", null, `?productId=${item.id}&newQuantity=${newCount}`);
+
+    if (data) setCount(newCount);
   };
 
-  const HandleButtonBuy = (text) => {
-    const details = text.split("\n").filter(Boolean);
-    setModalText(
-      details.map((text, index) => {
-        if (index === 0) {
-          return <p key={index} className="b2 title">{text}</p>;
-        } else {
-          const subtext = text.split("\t").filter(Boolean);
-          return (
-            <div key={index}>
-              {subtext.map((_text, _index) => (
-                <p key={_index} className={`b2 ${_index === 0 ? "title_sub" : ""}`}>
-                  {_text}
-                </p>
-              ))}
-            </div>
-          );
-        }
-      })
-    );
-    setModalOpen(true);
+  const handleRemoveFromCart = async () => {
+    const data = await updateCart("DELETE", null, `?productId=${item.id}`);
+
+    if (data) {
+      setCount(1);
+      setModalText("🗑️ Item removed from cart!");
+      setModalOpen(true);
+    }
   };
-  
-
-  const min = count > 1;
-  const max = count < 99;
-
-  const closeMessage = () => setModalOpen(false);
 
   return (
     <div className="addToCard">
       <div className="buttons_wrap">
         <div className="items_count">
           <button
-            className={`change_count S24_L32 ${min ? "" : "disabled"}`}
-            onClick={min ? HandleButtonSubtract : null}
+            className={`change_count S24_L32 ${count > 1 ? "" : "disabled"}`}
+            onClick={() => handleUpdateQuantity(count - 1)}
           >
             -
           </button>
           <p className="p2">{count}</p>
           <button
-            className={`change_count S24_L32 ${max ? "" : "disabled"}`}
-            onClick={max ? HandleButtonAdd : null}
+            className={`change_count S24_L32 ${count < 99 ? "" : "disabled"}`}
+            onClick={() => handleUpdateQuantity(count + 1)}
           >
             +
           </button>
         </div>
         <Button
-          Onclick={
-            !size
-              ? null
-              : () =>
-                  HandleButtonBuy(
-                    `Item Info\n
-                    item: \t ${item.title}\n
-                    color: ${item.color}\n
-                    size: ${size}\n
-                    count: ${count}`
-                  )
-          }
+          Onclick={handleAddToCart}
           className={`${!size ? "disabled" : ""}`}
         >
           {!size ? "Select the Size" : "Add to Cart"}
@@ -212,7 +215,7 @@ const AddToCard = ({ item, size }) => {
         <Message
           open={modalOpen}
           duration={3000}
-          onClose={closeMessage}
+          onClose={() => setModalOpen(false)}
           type="item_submit"
         >
           {modalText}

@@ -1,4 +1,4 @@
-import { Header, Resp, Input, Button } from "../Components";
+import { Header, Resp, Input, Button, useApiRequest } from "../Components";
 import "./LoginPage.scss";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { login, logout } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const { request } = useApiRequest();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -15,7 +16,7 @@ const LoginPage = () => {
     fullName: "",
     password: "",
   });
-  
+
   useEffect(() => {
     if (isLoggedIn) {
       setFormState("logout");
@@ -29,64 +30,52 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(login());
-    try {
-      const response = await fetch("https://localhost:5000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: formData.email,
-          password: formData.password,
-        }),
-      });
-      const data = await response.json();
+
+    const data = await request({
+      url: "https://localhost:5000/auth/login",
+      method: "POST",
+      body: {
+        username: formData.email,
+        password: formData.password,
+      },
+    });
+
+    if (data) {
       console.log("Login Success:", data);
-
-      if (response.ok) {
-        navigate("/");
-      }
-
-    } catch (error) {
-      console.error("Login Error:", error);
+      navigate("/");
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch("https://localhost:5000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          fullName: formData.fullName,
-          password: formData.password,
-        }),
-      });
-      const data = await response.json();
-      console.log("Registration Success:", data);
 
-      if (response.ok) {
-        setFormState("login");
-      }
-    } catch (error) {
-      console.error("Registration Error:", error);
+    const data = await request({
+      url: "https://localhost:5000/auth/register",
+      method: "POST",
+      body: {
+        email: formData.email,
+        fullName: formData.fullName,
+        password: formData.password,
+      },
+    });
+
+    if (data) {
+      console.log("Registration Success:", data);
+      setFormState("login");
     }
   };
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch("https://localhost:5000/auth/logout", {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        dispatch(logout());
-        navigate("/");
-      } else {
-        console.error("Logout failed");
-      }
-    } catch (error) {
-      console.error("Logout Error:", error);
+
+    const data = await request({
+      url: "https://localhost:5000/auth/logout",
+      method: "DELETE",
+    });
+
+    if (data) {
+      dispatch(logout());
+      navigate("/");
     }
   };
 
