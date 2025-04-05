@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 const useApiRequest = () => {
@@ -16,12 +17,15 @@ const useApiRequest = () => {
     try {
       const response = await fetch(url, {
         method,
+        credentials: "include",
         headers: { "Content-Type": "application/json", ...headers },
         body: body ? JSON.stringify(body) : null,
       });
 
+      console.log(response);
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Request failed");
+      
 
       return data;
     } catch (err) {
@@ -36,3 +40,4 @@ const useApiRequest = () => {
 };
 
 export default useApiRequest;
+

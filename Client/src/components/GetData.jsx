@@ -15,7 +15,6 @@ const GetData = ({ name, id = null }) => {
         setLoading(true);
       } finally {
         setLoading(false);
-        console.log(`Data has been uploaded`);
       }
     };
 

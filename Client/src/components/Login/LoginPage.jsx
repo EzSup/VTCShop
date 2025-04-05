@@ -1,4 +1,5 @@
 import { Header, Resp, Input, Button, useApiRequest } from "../Components";
+import axiosInstance from "../AxiosInstance";
 import "./LoginPage.scss";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,21 +30,20 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login());
 
-    const data = await request({
-      url: "https://localhost:5000/auth/login",
-      method: "POST",
-      body: {
+    const data = await axiosInstance
+      .post("/auth/login", {
         username: formData.email,
         password: formData.password,
-      },
-    });
-
-    if (data) {
-      console.log("Login Success:", data);
-      navigate("/");
-    }
+      })
+      .then(async () => {
+        dispatch(login());
+        console.log("Login Success:", data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleRegister = async (e) => {
@@ -68,15 +68,15 @@ const LoginPage = () => {
   const handleLogOut = async (e) => {
     e.preventDefault();
 
-    const data = await request({
-      url: "https://localhost:5000/auth/logout",
-      method: "DELETE",
-    });
-
-    if (data) {
-      dispatch(logout());
-      navigate("/");
-    }
+    const data = await axiosInstance
+      .delete("/auth/logout")
+      .then(async () => {
+        dispatch(logout());
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
