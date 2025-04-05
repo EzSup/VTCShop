@@ -24,7 +24,8 @@ namespace VTCShop.Application.Mapping
                   .Map(dest => dest.ProductName, src => src.Product.Name)
                   .Map(dest => dest.PriceForUnit, src => src.Product.Price)
                   .Map(dest => dest.Sum, src => src.Product.Price * src.Quantity)
-                  .Map(dest => dest.ImageLink, src => src.Product.ImageKey);
+                  .Map(dest => dest.ImageLink, src => src.Product.ImageKey)
+                  .Map(dest => dest.Size, src => src.ProductSize);
         }
     }
 }

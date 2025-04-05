@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VTCShop.Application.Contracts.Cart;
 using VTCShop.Application.DAL;
 using VTCShop.Application.DAL.Models;
+using VTCShop.Application.DAL.Models.Enum;
 using VTCShop.Application.Domain.Services;
 using VTCShop.Infrastructure.Services;
 namespace VTCShop.Application.BLL
@@ -36,14 +37,19 @@ namespace VTCShop.Application.BLL
                 return;
             }
 
-            if (!await _context.Products.AnyAsync(x => x.Id == request.ProductId))
+            var product = await _context.Products.FindAsync(request.ProductId);
+            if (product == null)
                 throw new Exception("No such product found!");
+
+            if (product.SupportsSizes && !product.AvailableSizes.Contains(request.Size))
+                throw new Exception("Selected size is not available!");
 
             cartItem = new UserCartItemEntity
             {
                 UserId = userId,
                 ProductId = request.ProductId,
-                Quantity = request.Quantity
+                Quantity = request.Quantity,
+                ProductSize = product.SupportsSizes && product.AvailableSizes.Contains(request.Size) ? request.Size : SizeEnum.None
             };
 
             await _context.UserCartItems.AddAsync(cartItem);
@@ -74,6 +80,17 @@ namespace VTCShop.Application.BLL
             await _context.SaveChangesAsync();
         }
 
+        public async Task<CartResponse> GetCart(int userId)
+        {
+            var items = await GetCartItems(userId);
+            var cart = new CartResponse
+            {
+                CartItems = items.ToArray(),
+                TotalPrice = items.Sum(x => x.Sum)
+            };
+            return cart;
+        }
+
         private async Task<IEnumerable<CartItemResponse>> GetCartItems(int userId)
         {
             var result = await _context.UserCartItems
@@ -93,17 +110,6 @@ namespace VTCShop.Application.BLL
 
             var mapped = result.Adapt<IEnumerable<CartItemResponse>>();
             return mapped;
-        }
-
-        public async Task<CartResponse> GetCart(int userId)
-        {
-            var items = await GetCartItems(userId);
-            var cart = new CartResponse
-            {
-                CartItems = items.ToArray(),
-                TotalPrice = items.Sum(x => x.Sum)
-            };
-            return cart;
         }
     }
 }

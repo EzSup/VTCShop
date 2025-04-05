@@ -44,9 +44,10 @@ namespace VTCShop.Application.BLL
 
         public async Task<ProductResponse?> GetById(int id)
         {
-            var result = (await _context.Products.FindAsync(id)).Adapt<ProductResponse>();
-            result.ImageLink = await _fileStorageRepository.GetObjectTempUrlAsync(result.ImageLink);
-            return result;
+            var result = await _context.Products.FindAsync(id);
+            var resultDto = result.Adapt<ProductResponse>();
+            resultDto.ImageLink = result.ImageKey != null ? await _fileStorageRepository.GetObjectTempUrlAsync(result.ImageKey) : null;
+            return resultDto;
         }
 
         public async Task<int> Create(ProductCreateRequest request)
@@ -69,6 +70,8 @@ namespace VTCShop.Application.BLL
             product.Name = request.Name;
             product.Description = request.Description;
             product.Price = request.Price;
+            product.SupportsSizes = request.SupportsSizes;
+            product.AvailableSizes = request.AvailableSizes;
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
@@ -99,6 +102,10 @@ namespace VTCShop.Application.BLL
             if (filtrationDto.minPrice <= filtrationDto.maxPrice && filtrationDto.minPrice > 0)
             {
                 query = query.Where(x => x.Price >= filtrationDto.minPrice && x.Price <= filtrationDto.maxPrice);
+            }
+            if (filtrationDto.sizes.Any())
+            {
+                query = query.Where(x => x.AvailableSizes.Intersect(filtrationDto.sizes).Any());
             }
 
             var result = await query.Skip((pageNumber-1) * pageSize)

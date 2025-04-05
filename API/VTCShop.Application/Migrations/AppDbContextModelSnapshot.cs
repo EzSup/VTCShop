@@ -289,6 +289,9 @@ namespace VTCShop.Application.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ProductSize")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -320,8 +323,14 @@ namespace VTCShop.Application.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("Features")
+                        .HasColumnType("text");
+
                     b.Property<string>("ImageKey")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsSellingFastMarked")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -331,8 +340,8 @@ namespace VTCShop.Application.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("integer");
+                    b.Property<bool>("SupportsSizes")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -347,6 +356,9 @@ namespace VTCShop.Application.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductSize")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")

@@ -13,14 +13,16 @@ namespace VTCShop.Application.DAL.Models
         public string Name { get; set; }
 
         public string? Description { get; set; }
+        public string? Features { get; set; }
 
         [Range(0.01, 1000000)]
         public decimal Price { get; set; }
 
-        public int Stock { get; set; } = 0;
-
         public int? CategoryId { get; set; }
+
+        public bool SupportsSizes { get; set; }
         public IEnumerable<SizeEnum> AvailableSizes { get; set; } = [];
+        public bool IsSellingFastMarked { get; set; }
         public CategoryEntity? Category { get; set; }
 
         public List<OrderItemEntity> OrderItems { get; set; } = new List<OrderItemEntity>();
