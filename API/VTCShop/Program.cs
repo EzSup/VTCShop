@@ -43,7 +43,7 @@ namespace VTCShop
             builder.Services.AddCors(x =>
                                          x.AddDefaultPolicy(options =>
                                                                 options
-                                                                    .WithOrigins("http://localhost:5173")
+                                                                    .WithOrigins("http://localhost:5173", "http://localhost:3000")
                                                                     .AllowAnyMethod()
                                                                     .AllowAnyHeader()
                                                                     .AllowCredentials()));
@@ -62,6 +62,9 @@ namespace VTCShop
             app.UseCors();
 
             app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             using (var scope = app.Services.CreateScope())
             {
