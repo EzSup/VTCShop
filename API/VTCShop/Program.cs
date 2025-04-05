@@ -8,6 +8,7 @@ using VTCShop.Application.DAL;
 using VTCShop.Application.Mapping;
 using VTCShop.Endpoints;
 using VTCShop.Extensions;
+using VTCShop.Helpers;
 using VTCShop.Infrastructure.Options;
 using VTCShop.Infrastructure.Services;
 namespace VTCShop
@@ -50,6 +51,8 @@ namespace VTCShop
 
             builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
+
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
             var app = builder.Build();
 
