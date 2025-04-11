@@ -90,6 +90,7 @@ namespace VTCShop
             app.MapCategoryEndpoint();
             app.MapAuthorizationEndpoint();
             app.MapCartEndpoint();
+            app.MapOrderEndpoint();
 
             app.Run();
         }

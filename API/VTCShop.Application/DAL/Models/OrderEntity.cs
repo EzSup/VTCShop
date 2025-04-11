@@ -13,8 +13,6 @@ namespace VTCShop.Application.DAL.Models
         [Required]
         public string ShippingAddress { get; set; }
 
-        public string Status { get; set; } = "Pending";
-
         public int UserId { get; set; }
         public ApplicationUserEntity UserEntity { get; set; }
 

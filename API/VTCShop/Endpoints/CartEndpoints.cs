@@ -19,30 +19,30 @@ namespace VTCShop.Endpoints
 
         private static void BuildGroup(this RouteGroupBuilder group)
         {
-            group.MapPost("", async (ClaimsPrincipal User, [FromServices]ICartService cartService, [FromBody]AddItemToCartRequest request) =>
+            group.MapPost("", async (ClaimsPrincipal user, [FromServices]ICartService cartService, [FromBody]AddItemToCartRequest request) =>
             {
-                var id = User.GetUserId();
+                var id = user.GetUserId();
                 await cartService.AddItemToCart(id, request);
                 return Results.Created();
             });
 
-            group.MapGet("", async (ClaimsPrincipal User, [FromServices]ICartService cartService) =>
+            group.MapGet("", async (ClaimsPrincipal user, [FromServices]ICartService cartService) =>
             {
-                var id = User.GetUserId();
+                var id = user.GetUserId();
                 var result = await cartService.GetCart(id);
                 return Results.Ok(result);
             }).Produces<CartResponse>();
 
-            group.MapDelete("", async (ClaimsPrincipal User, [FromServices]ICartService cartService, [FromQuery]int productId) =>
+            group.MapDelete("", async (ClaimsPrincipal user, [FromServices]ICartService cartService, [FromQuery]int productId) =>
             {
-                var id = User.GetUserId();
+                var id = user.GetUserId();
                 await cartService.RemoveItemFromCart(id, productId);
                 return Results.Ok();
             });
 
-            group.MapPatch("", async (ClaimsPrincipal User, [FromServices]ICartService cartService, [FromQuery]int productId, [FromQuery]int newQuantity) =>
+            group.MapPatch("", async (ClaimsPrincipal user, [FromServices]ICartService cartService, [FromQuery]int productId, [FromQuery]int newQuantity) =>
             {
-                var id = User.GetUserId();
+                var id = user.GetUserId();
                 await cartService.UpdateCartItemQuantity(id, productId, newQuantity);
                 return Results.Ok();
             });
