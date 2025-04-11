@@ -5,6 +5,7 @@ import ContactUs from "./components/Contact";
 import CollectionPage from "./components/CollectionPage";
 import ItemDetails from "./components/ItemDetails/ItemDetails";
 import LoginPage from "./components/Login/LoginPage";
+import Cart from "./components/ItemDetails/Cart";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/Collection" element={<CollectionPage />} />
           <Route path="/item/:id" element={<ItemDetails />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </Router>
   );

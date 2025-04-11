@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Header,
   Footer,
@@ -6,13 +6,13 @@ import {
   Loading,
   Button,
   Message,
-  useApiRequest
 } from "../Components";
 import GetData from "../GetData";
 import Item from "../Items/Item";
 import "./ItemDetails.scss";
 import titleClasses from "../SectionTitle/SectionTitle.module.scss";
 import { useState } from "react";
+import axiosInstance from "../AxiosInstance";
 
 const ITemDetails = () => {
   return (
@@ -133,75 +133,68 @@ const ItemDescription = ({ item }) => {
   );
 };
 
-
 const AddToCard = ({ item, size }) => {
-  const {request} = useApiRequest();
   const [count, setCount] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
-
-  const apiUrl = "https://localhost:5000/cart";
-
-  const updateCart = async (method, body = null, query = "") => {
-    const data = await request({
-      url: `${apiUrl}${query}`,
-      method: method,
-      body: body,
-    });
-
-    if (!data) throw new Error("Cart request failed");
-    return data;
-  }
+  const navigate = useNavigate();
 
   const handleAddToCart = async () => {
     if (!size) return;
-
-    const data = await updateCart("POST", {
-      productId: item.id,
-      quantity: count,
+    navigate("/cart", {
+      state: {
+        item,
+        size,
+        count,
+      },
     });
-
-    if (data) {
-      setModalText("✅ Item added to cart!");
-      setModalOpen(true);
-    }
+    /*const data = await axiosInstance
+      .post("/cart", {
+        productId: item.id,
+        quantity: count,
+      })
+      .then(() => {
+        setModalText("✅ Item added to cart!");
+        setModalOpen(true);
+        navigate("/Cart", {
+          state: {
+            item,
+            size,
+            count,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log(data);*/
   };
 
   const handleUpdateQuantity = async (newCount) => {
-    if (newCount < 1) {
-      await handleRemoveFromCart();
+    if (newCount < 1 || newCount > 99) {
       return;
     }
-
-    const data = await updateCart("PATCH", null, `?productId=${item.id}&newQuantity=${newCount}`);
-
-    if (data) setCount(newCount);
-  };
-
-  const handleRemoveFromCart = async () => {
-    const data = await updateCart("DELETE", null, `?productId=${item.id}`);
-
-    if (data) {
-      setCount(1);
-      setModalText("🗑️ Item removed from cart!");
-      setModalOpen(true);
-    }
+    await axiosInstance
+      .patch(`/cart?productId=${item.id}&newQuantity=${newCount}`)
+      .then(() => {
+        setCount(newCount);
+      });
   };
 
   return (
     <div className="addToCard">
       <div className="buttons_wrap">
-        <div className="items_count">
+        <div className={`items_count ${count === 1 ? `disabled` : ""}`}>
           <button
             className={`change_count S24_L32 ${count > 1 ? "" : "disabled"}`}
-            onClick={() => handleUpdateQuantity(count - 1)}
+            onClick={count >= 1 ? () => handleUpdateQuantity(count - 1) : null}
           >
             -
           </button>
           <p className="p2">{count}</p>
           <button
             className={`change_count S24_L32 ${count < 99 ? "" : "disabled"}`}
-            onClick={() => handleUpdateQuantity(count + 1)}
+            onClick={count <= 99 ? () => handleUpdateQuantity(count + 1) : null}
           >
             +
           </button>

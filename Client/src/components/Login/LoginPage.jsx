@@ -1,4 +1,4 @@
-import { Header, Resp, Input, Button, useApiRequest } from "../Components";
+import { Header, Resp, Input, Button } from "../Components";
 import axiosInstance from "../AxiosInstance";
 import "./LoginPage.scss";
 import { useState, useEffect } from "react";
@@ -7,7 +7,6 @@ import { login, logout } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { request } = useApiRequest();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -49,28 +48,28 @@ const LoginPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const data = await request({
-      url: "https://localhost:5000/auth/register",
-      method: "POST",
-      body: {
+    const data = await axiosInstance
+      .post("/auth/register", {
         email: formData.email,
         fullName: formData.fullName,
         password: formData.password,
-      },
-    });
-
-    if (data) {
-      console.log("Registration Success:", data);
-      setFormState("login");
-    }
+      })
+      .then(async () => {
+        console.log("Registration Success:", data);
+        setFormState("login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleLogOut = async (e) => {
     e.preventDefault();
 
-    const data = await axiosInstance
+    await axiosInstance
       .delete("/auth/logout")
       .then(async () => {
+        setFormState("login");
         dispatch(logout());
         navigate("/");
       })
