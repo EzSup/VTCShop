@@ -75,13 +75,14 @@ const LoginPage = () => {
 
     await axiosInstance
       .delete("/auth/logout")
-      .then(async () => {
+      .then(async () => {})
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
         setFormState("login");
         dispatch(logout());
         navigate("/");
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 
