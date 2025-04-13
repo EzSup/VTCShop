@@ -30,19 +30,26 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = await axiosInstance
-      .post("/auth/login", {
+    try {
+      const response = await axiosInstance.post("/auth/login", {
         username: formData.email,
         password: formData.password,
-      })
-      .then(async () => {
-        dispatch(login());
-        console.log("Login Success:", data);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
       });
+      dispatch(
+        login({
+          isAdmin: response.data.isAdmin || false,
+          username: response.data.userName,
+        })
+      );
+
+      if (response.data.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+    }
   };
 
   const handleRegister = async (e) => {

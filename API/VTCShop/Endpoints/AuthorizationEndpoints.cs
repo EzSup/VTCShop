@@ -49,11 +49,11 @@ namespace VTCShop.Endpoints
                               if (result)
                               {
                                   await signInManager.SignInAsync(user, false);
-                                  return Results.Ok($"User {user.Email} registered successfully logged in!");
+                                  return Results.Ok(new LogInResponse(user.UserName == "admin", user.UserName));
                               }
 
                               return Results.BadRequest("Unsuccessful login attempt.");
-                          });
+                          }).Produces<LogInResponse>();
 
             group.MapDelete("logout", async (SignInManager<ApplicationUserEntity> signInManager) =>
             {
