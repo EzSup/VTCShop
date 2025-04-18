@@ -158,7 +158,7 @@ const MoreDiv = ({ Class }) => {
         >
           <path
             d="M16.5 1L9 8.5L1.5 1"
-            stroke="#212322"
+            stroke="#4297d7"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
