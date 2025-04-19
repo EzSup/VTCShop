@@ -3,8 +3,8 @@ import "./Collections.scss";
 import { useState, useEffect } from "react";
 
 const Collections = () => {
-  const [beforeItemPos, setBeforeItemPos] = useState(0.9);
-  const [streakPos, setStreakPos] = useState(0.9);
+  const [beforeItemPos, setBeforeItemPos] = useState(0.87);
+  const [streakPos, setStreakPos] = useState(0.87);
   const [isDragging, setIsDragging] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -20,8 +20,8 @@ const Collections = () => {
     if (!isDragging) return;
     const clientX = e.type === "mousemove" ? e.clientX : e.touches[0].clientX;
     const streakPosition = clientX / window.innerWidth;
-    setBeforeItemPos(Math.max(0.1, Math.min(0.9, streakPosition)));
-    setStreakPos(Math.max(0.1, Math.min(0.9, streakPosition)));
+    setBeforeItemPos(Math.max(0.1, Math.min(0.87, streakPosition)));
+    setStreakPos(Math.max(0.1, Math.min(0.87, streakPosition)));
   };
 
   const handleMouseOrTouchUp = () => {

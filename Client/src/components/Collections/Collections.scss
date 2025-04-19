@@ -63,7 +63,7 @@
     top: 0;
     bottom: 0;
     width: 5px;
-    background: #212322;
+    background: #fafaf8;
     z-index: 3;
     .arrows {
       @extend .arrows;
@@ -108,7 +108,7 @@
 }
 
 .focused-Logo {
-  background: url("/Dev_test-react/Logo/Text/Black.png") no-repeat center center;
+  background: url("/Dev_test-react/Logo/Text/Black_text.png") no-repeat center center;
   background-size: contain;
   width: 250px;
   height: 60px;

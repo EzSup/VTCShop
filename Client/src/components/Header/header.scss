@@ -28,7 +28,7 @@
 }
 .header {
   height: 78px;
-  background: #e4e4e7d1;
+  //background: #e4e4e7d1;
   .wrap {
     display: flex;
     flex-direction: row;
@@ -120,7 +120,7 @@
       height: 100%;
       width: 100%;
       background-size: contain;
-      background: url("/Dev_test-react/Logo/Text/Black.png");
+      background: url("/Dev_test-react/Logo/Text/Black.png") no-repeat center center;
       transition: all 0.5s;
       &:hover {
         transform: scaleX(1.05);
@@ -200,7 +200,7 @@
   height: 0px;
   opacity: 0;
   transition: all 0.5s;
-  background: rgba(228, 228, 231, 0.8196078431);
+  //background: rgba(228, 228, 231, 0.8196078431);
   &.shown {
     height: 90px;
     opacity: 1;
@@ -275,7 +275,7 @@
         top: 90px;
         width: 100%;
         height: 0px;
-        background: #e4e4e7d1;
+        //background: #e4e4e7d1;
         left: 0px;
         transition: all 0.5s;
         overflow: hidden;
