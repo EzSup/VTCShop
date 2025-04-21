@@ -21,13 +21,20 @@ const Item = ({
   const allSizes = [1, 2, 3, 4, 5, 6];
   const sizeLabels = allSizes.map((sizeId) => {
     switch (sizeId) {
-      case 1: return "XS";
-      case 2: return "S";
-      case 3: return "M";
-      case 4: return "L";
-      case 5: return "XL";
-      case 6: return "2XL";
-      default: return "Unknown Size";
+      case 1:
+        return "XS";
+      case 2:
+        return "S";
+      case 3:
+        return "M";
+      case 4:
+        return "L";
+      case 5:
+        return "XL";
+      case 6:
+        return "2XL";
+      default:
+        return "Unknown Size";
     }
   });
 
@@ -38,9 +45,9 @@ const Item = ({
           <div className="preview-image">
             <div style={{ backgroundImage: `url(${imageLink})` }}></div>
           </div>
-          {supportsSizes && (
+          {!children ? (
             <>
-              {!children ? (
+              {supportsSizes ? (
                 <div className="hover_container sizelist">
                   {sizeLabels.map((size, index) => (
                     <Button
@@ -62,9 +69,15 @@ const Item = ({
                   ))}
                 </div>
               ) : (
-                <div className="hover_container"> {children} </div>
+                <div className="hover_container">
+                  <Button Onclick={() => goToItemDetails(id)}>
+                    Quick Add <span>+</span>
+                  </Button>
+                </div>
               )}
             </>
+          ) : (
+            <div className="hover_container"> {children} </div>
           )}
         </div>
         <div className="description">

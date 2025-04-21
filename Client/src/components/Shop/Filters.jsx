@@ -8,7 +8,7 @@ const Filter = ({
   isOpen,
   onToggle,
   title,
-  optionsCaption,
+  //optionsCaption,
   selectedOptions,
 }) => {
   const checkboxesRef = useRef({});
@@ -63,7 +63,7 @@ const Filter = ({
               }
             }}
           >
-            {optionsCaption ? optionsCaption[option] : option}
+            {/*optionsCaption ? optionsCaption[option] : option*/}
           </CheckBox>
         ))}
       </div>
