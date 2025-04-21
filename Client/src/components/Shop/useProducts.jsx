@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../AxiosInstance";
 
 const useProducts = ({ filters }) => {
   const [products, setProducts] = useState([]);

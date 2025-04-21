@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DropdownContainer, Button } from "../Components";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../AxiosInstance";
 
 const PriceFilter = ({ updateFilter, isOpen, onToggle, title }) => {
   const [price, setPrice] = useState(0);
@@ -16,7 +16,9 @@ const PriceFilter = ({ updateFilter, isOpen, onToggle, title }) => {
       if (products.length > 0) {
         const discountedPrices = products.map((product) =>
           product.discount
-            ? Math.round(product.price - product.price * (product.discount / 100))
+            ? Math.round(
+                product.price - product.price * (product.discount / 100)
+              )
             : Math.round(product.price)
         );
 
@@ -70,7 +72,10 @@ const PriceFilter = ({ updateFilter, isOpen, onToggle, title }) => {
             onChange={handlePriceChange}
           />
           <p className="b2">Selected Price: ${price}</p>
-          <button onClick={handleSubmit} className="pargraph default submit-button">
+          <button
+            onClick={handleSubmit}
+            className="pargraph default submit-button"
+          >
             Submit
           </button>
         </div>

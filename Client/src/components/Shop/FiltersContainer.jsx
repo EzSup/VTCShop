@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PriceFilter from "./PriceFilter";
 import axiosInstance from "../axiosInstance";
 
-const FiltersContainer = ({ updateFilter, items, filters }) => {
+const FiltersContainer = ({ updateFilter, filters }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openFilter, setOpenFilter] = useState(null);
@@ -66,6 +66,10 @@ const FiltersContainer = ({ updateFilter, items, filters }) => {
         id: cat.id,
         label: cat.name,
       })),
+    },
+    {
+      type: "price",
+      title: "Price",
     },
   ];
 
