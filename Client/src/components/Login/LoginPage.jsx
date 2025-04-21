@@ -1,5 +1,5 @@
 import { Header, Resp, Input, Button } from "../Components";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../AxiosInstance";
 import "./LoginPage.scss";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,21 +54,20 @@ const LoginPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axiosInstance.post("/auth/register", {
         email: formData.email,
         fullName: formData.fullName,
         password: formData.password,
       });
-  
+
       console.log("Registration Success:", response.data);
       setFormState("login");
     } catch (error) {
       console.error("Registration Error:", error);
     }
   };
-  
 
   const handleLogOut = async (e) => {
     e.preventDefault();

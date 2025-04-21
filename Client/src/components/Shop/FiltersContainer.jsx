@@ -2,7 +2,7 @@ import Filter from "./Filters";
 import { Loading } from "../Components";
 import { useEffect, useState } from "react";
 import PriceFilter from "./PriceFilter";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../AxiosInstance";
 
 const FiltersContainer = ({ updateFilter, filters }) => {
   const [categories, setCategories] = useState([]);
