@@ -6,6 +6,7 @@ namespace VTCShop.Application.Domain.Services
     public interface IProductService
     {
         Task<IEnumerable<ProductInListResponse>> GetPaged(int pageNumber, int pageSize);
+        Task<IEnumerable<ProductInListResponse>> GetBestSellersAsync(int maxCount);
         Task<IEnumerable<ProductInListResponse>> GetFiltered(int pageNumber, int pageSize, PersonFiltrationDTO filtrationDto);
         Task<ProductResponse?> GetById(int id);
         Task<int> Create(ProductCreateRequest request);

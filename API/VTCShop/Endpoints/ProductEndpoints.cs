@@ -26,6 +26,8 @@ namespace VTCShop.Endpoints
                  })
                  .Produces<ProductResponse>();
 
+            group.MapGet("bestSellers", async (IProductService service, [FromQuery]int? count) => await service.GetBestSellersAsync((count ?? 0) > 0 ? (int)count : 10));
+
             group.MapPost("/list", async ([FromServices]IProductService productService, [FromQuery]int? pageNumber, [FromQuery]int? pageSize, [FromBody]PersonFiltrationDTO filtrationDto) =>
                  {
                      var result = await productService.GetFiltered(pageNumber ?? 1, pageSize ?? 10, filtrationDto);

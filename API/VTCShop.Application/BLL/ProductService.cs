@@ -121,5 +121,36 @@ namespace VTCShop.Application.BLL
 
             return mapped;
         }
+
+        public async Task<IEnumerable<ProductInListResponse>> GetBestSellersAsync(int maxCount)
+        {
+            var mapped = (await _context.Products
+                                        .Include(p => p.OrderItems)
+                                        .AsNoTracking()
+                                        .OrderByDescending(p => p.OrderItems.Sum(oi => oi.Quantity))
+                                        .Take(maxCount)
+                                        .ToListAsync())
+                .Adapt<IEnumerable<ProductInListResponse>>();
+
+
+            return await GetBestSellersAsync(mapped);
+        }
+
+        private async Task<IEnumerable<ProductInListResponse>> GetBestSellersAsync(IEnumerable<ProductInListResponse> input)
+        {
+            var productsWithImages = input
+                                     .Where(x => !string.IsNullOrWhiteSpace(x.ImageLink))
+                                     .Select(async x => new ProductInListResponse
+                                     {
+                                         Id = x.Id,
+                                         Title = x.Title,
+                                         AvailableSizes = x.AvailableSizes,
+                                         Price = x.Price,
+                                         SupportsSizes = x.SupportsSizes,
+                                         ImageLink = await _fileStorageRepository.GetObjectTempUrlAsync(x.ImageLink)
+                                     });
+
+            return await Task.WhenAll(productsWithImages);
+        }
     }
 }
