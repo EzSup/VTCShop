@@ -1,13 +1,29 @@
 import Filter from "./Filters";
-import GetData from "../GetData";
 import { Loading } from "../Components";
 import { useEffect, useState } from "react";
 import PriceFilter from "./PriceFilter";
+import axiosInstance from "../axiosInstance";
 
 const FiltersContainer = ({ updateFilter, items, filters }) => {
-  const { items: filtersData, loading } = GetData({ name: "filtersData" });
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [openFilter, setOpenFilter] = useState(null);
   const [mobileContainer, setMobileContainer] = useState(false);
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await axiosInstance.get("/categories/all");
+        setCategories(res.data);
+      } catch (error) {
+        console.error("Failed to fetch filters:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFilters();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,30 +43,34 @@ const FiltersContainer = ({ updateFilter, items, filters }) => {
     };
   }, []);
 
-
   const handleToggle = (id) => {
     setOpenFilter((prevId) => {
-      if(mobileContainer) return id;
+      if (mobileContainer) return id;
       return prevId === id ? null : id;
     });
   };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    const filterValue =
-      value === "true" ? true : value === "false" ? false : value;
-    updateFilter(name, filterValue);
+    const parsedValue = Array.isArray(value)
+      ? value.map((v) => (v === "true" ? true : v === "false" ? false : v))
+      : value;
+    updateFilter(name, parsedValue);
   };
 
-  const itemsInStock = items.filter((item) => item.soldout === false).length;
-  const itemsOutOfStock = items.filter((item) => item.soldout === true).length;
-
-  const availabilityCaptions = {
-    true: `Out of stock (${itemsOutOfStock})`,
-    false: `In stock (${itemsInStock})`,
-  };
+  const filtersData = [
+    {
+      type: "categoryId",
+      title: "Category",
+      options: categories.map((cat) => ({
+        id: cat.id,
+        label: cat.name,
+      })),
+    },
+  ];
 
   if (loading) return <Loading />;
+
   return (
     <div className="filtration">
       <div className="filteredBy frame">
@@ -59,8 +79,8 @@ const FiltersContainer = ({ updateFilter, items, filters }) => {
         </div>
         <div className="filters">
           <div className="scrollbar">
-            {filtersData.map((_filter, index) => {
-              return _filter.type === "price" ? (
+            {filtersData.map((_filter, index) =>
+              _filter.type === "price" ? (
                 <PriceFilter
                   key={index}
                   updateFilter={updateFilter}
@@ -71,19 +91,16 @@ const FiltersContainer = ({ updateFilter, items, filters }) => {
               ) : (
                 <Filter
                   key={index}
-                  isOpen={openFilter === index}
-                  onToggle={() => handleToggle(index)}
                   type={_filter.type}
                   options={_filter.options}
                   onChange={handleFilterChange}
+                  isOpen={openFilter === index}
+                  onToggle={() => handleToggle(index)}
                   title={_filter.title}
-                  optionsCaption={
-                    _filter.type === "soldout" ? availabilityCaptions : null
-                  }
                   selectedOptions={filters[_filter.type] || []}
                 />
-              );
-            })}
+              )
+            )}
           </div>
         </div>
       </div>

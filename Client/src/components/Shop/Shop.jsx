@@ -1,22 +1,24 @@
 import "./Shop.scss";
 import Item from "../Items/Item";
-import GetData from "../GetData";
 import { Loading, Button } from "../Components";
 import { useEffect, useMemo, useState } from "react";
 import FiltersContainer from "./FiltersContainer";
 import SortContainer from "./SortContainer";
 import { useLocation, useNavigate } from "react-router-dom";
+import useProducts from "./useProducts";
 
 const Shop = () => {
-  const { items, loading } = GetData({ name: "items" });
   const [isExpanded, setIsExpanded] = useState(false);
   const [filtersView, setFiltersView] = useState(true);
   const [filters, setFilters] = useState({
-    size: "",
-    type: "",
-    color: "",
-    soldout: "",
+    size: [],
+    type: [],
+    color: [],
+    soldout: [],
+    price: null,
   });
+  const { products: items, loading } = useProducts({ filters });
+
   const [sortedItems, setSortedItems] = useState([]);
   const [sortOption, setSortOption] = useState("default_byId");
 
