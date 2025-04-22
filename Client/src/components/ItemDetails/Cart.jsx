@@ -17,7 +17,7 @@ const Cart = () => {
 
 export default Cart;
 
-const CartSection = ({ item, size, count }) => {
+const CartSection = ({ product, quantity, sizeIdx }) => {
   /*const handleRemoveFromCart = async () => {
     await axiosInstance
       .delete(`/cart?productId=${item.id}`)
@@ -31,13 +31,13 @@ const CartSection = ({ item, size, count }) => {
       });
   };*/
 
-  console.log(item, size, count);
+  console.log(product.name, sizeIdx, quantity);
   return (
     <div>
       <h2>Cart</h2>
-      <p>Item: {item.id}</p>
-      <p>Size: {size}</p>
-      <p>Count: {count}</p>
+      <p>Item: {product.name}</p>
+      <p>Size: {sizeIdx}</p>
+      <p>Count: {quantity}</p>
     </div>
   );
 };

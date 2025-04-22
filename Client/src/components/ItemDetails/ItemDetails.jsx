@@ -7,12 +7,12 @@ import {
   Button,
   Message,
 } from "../Components";
-import GetData from "../GetData";
 import Item from "../Items/Item";
 import "./ItemDetails.scss";
 import titleClasses from "../SectionTitle/SectionTitle.module.scss";
 import { useState } from "react";
 import axiosInstance from "../AxiosInstance";
+import useProductById from "./useProductById";
 
 const ITemDetails = () => {
   return (
@@ -28,43 +28,43 @@ export default ITemDetails;
 
 const ItemContainer = () => {
   const { id } = useParams();
-  const { items, loading } = GetData({ name: "items", id });
+  const { product, loading, error } = useProductById(id);
 
-  if (loading || !items.length) return <Loading />;
-
-  const item = items[0];
+  if (loading) return <Loading />;
+  if (error || !product) return <p className="error">Не знайдено товар 🤷‍♂️</p>;
 
   return (
     <section className="Item_details">
       <div className="details_wrap">
-        <ItemPhotos item={item} />
-        <ItemDescription item={item} />
+        <ItemPhotos item={product} />
+        <ItemDescription item={product} />
       </div>
     </section>
   );
 };
 
 const ItemPhotos = ({ item }) => {
-  const OtherProtos = item.otherPhotos;
-  const [MainPhoto, SetMainPhoto] = useState(item.preview);
+  const otherPhotos = item.otherPhotos ?? [];
+  const [mainPhoto, setMainPhoto] = useState(item.imageLink);
 
   return (
     <div className="photos_frame">
       <div className="preview">
-        <Item {...item} preview={MainPhoto} />
+        <Item {...item} preview={mainPhoto} />
       </div>
+
       <div className="other_photos">
         <img
+          src={item.imageLink}
           alt="main"
-          src={`${item.preview}`}
-          onClick={() => SetMainPhoto(item.preview)}
+          onClick={() => setMainPhoto(item.imageLink)}
         />
-        {OtherProtos.map((photo, index) => (
+        {otherPhotos.map((photo, i) => (
           <img
-            alt={index}
-            src={`${photo}`}
-            key={index}
-            onClick={() => SetMainPhoto(photo)}
+            key={i}
+            src={photo}
+            alt={i}
+            onClick={() => setMainPhoto(photo)}
           />
         ))}
       </div>
@@ -73,8 +73,9 @@ const ItemPhotos = ({ item }) => {
 };
 
 const ItemDescription = ({ item }) => {
-  const Sizes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
-  const SizeTitles = [
+  console.log(item);
+  const sizeCodes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
+  const sizeTitles = [
     "Small",
     "Medium",
     "Large",
@@ -83,15 +84,12 @@ const ItemDescription = ({ item }) => {
     "3 Extra Large",
     "4 Extra Large",
   ];
-  const [selectedSize, setSelectedSize] = useState(null);
 
-  const handleButtonClick = (size) => {
-    setSelectedSize(size);
-  };
+  const available = item.supportsSizes
+    ? item.availableSizes.map(Number)
+    : [];
 
-  const selectedSizeTitle = selectedSize
-    ? SizeTitles[Sizes.indexOf(selectedSize)]
-    : null;
+  const [selected, setSelected] = useState(null);
 
   return (
     <div className="description_frame">
@@ -99,31 +97,39 @@ const ItemDescription = ({ item }) => {
         <div className="main_item_content">
           <Item {...item} />
           <div className={`${titleClasses.arrow} arrow`}></div>
-          <div className="sizelist">
-            <div className="current_size">
-              <span className="System S12_L20 UpC"> size: </span>
-              <span className="p2">{selectedSizeTitle}</span>
+
+          {item.supportsSizes ? (
+            <div className="sizelist">
+              <div className="current_size">
+                <span className="System S12_L20 UpC"> size: </span>
+                <span className="p2">
+                  {selected != null ? sizeTitles[selected] : "—"}
+                </span>
+              </div>
+              <div className="size_buttons">
+                {sizeCodes.map((code, idx) => {
+                  const disabled = !available.includes(idx);
+                  return (
+                    <Button
+                      key={code}
+                      className={`${disabled ? "sold" : ""} ${
+                        selected === idx ? "clicked" : ""
+                      }`}
+                      Onclick={disabled ? null : () => setSelected(idx)}
+                    >
+                      {code}
+                    </Button>
+                  );
+                })}
+              </div>
             </div>
-            <div className="size_buttons">
-              {Sizes.map((size) => (
-                <Button
-                  key={size}
-                  className={`${!item.sizes.includes(size) ? "sold" : ""} ${
-                    selectedSize === size ? "clicked" : ""
-                  }`}
-                  Onclick={
-                    !item.sizes.includes(size)
-                      ? null
-                      : () => handleButtonClick(size)
-                  }
-                >
-                  {size}
-                </Button>
-              ))}
-            </div>
-          </div>
+          ) : null}
           <div className={`${titleClasses.arrow} arrow`}></div>
-          <AddToCard item={item} size={selectedSize} />
+          <AddToCard
+            item={item}
+            sizeIdx={selected}
+            sizeCode={sizeCodes[selected]}
+          />
         </div>
         <div className="details">
           <Details {...item} />
@@ -133,52 +139,38 @@ const ItemDescription = ({ item }) => {
   );
 };
 
-const AddToCard = ({ item, size }) => {
+const AddToCard = ({ item, sizeIdx, sizeCode }) => {
   const [count, setCount] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
   const navigate = useNavigate();
 
+  const changeCount = (delta) =>
+    setCount((c) => Math.min(99, Math.max(1, c + delta)));
+
   const handleAddToCart = async () => {
-    if (!size) return;
-    navigate("/cart", {
-      state: {
-        item,
-        size,
-        count,
-      },
-    });
-    /*const data = await axiosInstance
-      .post("/cart", {
+    if (item.supportsSizes && sizeIdx == null) return;
+    console.log(item.id, count, item.supportsSizes ? sizeIdx : null);
+
+    try {
+      await axiosInstance.post("/cart", {
         productId: item.id,
         quantity: count,
-      })
-      .then(() => {
-        setModalText("✅ Item added to cart!");
-        setModalOpen(true);
-        navigate("/Cart", {
-          state: {
-            item,
-            size,
-            count,
-          },
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+        size: item.supportsSizes ? sizeIdx : null,
       });
-    console.log(data);*/
-  };
 
-  const handleUpdateQuantity = async (newCount) => {
-    if (newCount < 1 || newCount > 99) {
-      return;
-    }
-    await axiosInstance
-      .patch(`/cart?productId=${item.id}&newQuantity=${newCount}`)
-      .then(() => {
-        setCount(newCount);
+      navigate("/cart", {
+        state: {
+          product: item,
+          quantity: count,
+          sizeIdx: item.supportsSizes ? sizeCode : null,
+        },
       });
+    } catch (err) {
+      console.error("Add‑to‑cart error:", err);
+      setModalText("❌ Failed to add item. Try again!");
+      setModalOpen(true);
+    }
   };
 
   return (
@@ -187,23 +179,29 @@ const AddToCard = ({ item, size }) => {
         <div className={`items_count ${count === 1 ? `disabled` : ""}`}>
           <button
             className={`change_count S24_L32 ${count > 1 ? "" : "disabled"}`}
-            onClick={count >= 1 ? () => handleUpdateQuantity(count - 1) : null}
+            onClick={() => changeCount(-1)}
+            disabled={count === 1}
           >
             -
           </button>
           <p className="p2">{count}</p>
           <button
             className={`change_count S24_L32 ${count < 99 ? "" : "disabled"}`}
-            onClick={count <= 99 ? () => handleUpdateQuantity(count + 1) : null}
+            onClick={() => changeCount(+1)}
+            disabled={count === 99}
           >
             +
           </button>
         </div>
         <Button
           Onclick={handleAddToCart}
-          className={`${!size ? "disabled" : ""}`}
+          className={`${
+            item.supportsSizes && sizeIdx == null ? "disabled" : ""
+          }`}
         >
-          {!size ? "Select the Size" : "Add to Cart"}
+          {item.supportsSizes && sizeIdx == null
+            ? "Select the Size"
+            : "Add to Cart"}
         </Button>
         <Message
           open={modalOpen}
@@ -220,8 +218,8 @@ const AddToCard = ({ item, size }) => {
 
 const Details = (item) => {
   const [openedDiv, setOpenedDiv] = useState(1);
-  const description = item.description.split("\n").filter(Boolean);
-  const features = item.features.split("\n").filter(Boolean);
+  const description = (item.description || "").split("\n").filter(Boolean);
+  const features = (item.features || "").split("\n").filter(Boolean);
 
   const toggleOpenedDiv = (number) => {
     setOpenedDiv(number === openedDiv ? null : number);
