@@ -1,29 +1,11 @@
 import Filter from "./Filters";
-import { Loading } from "../Components";
 import { useEffect, useState } from "react";
 import PriceFilter from "./PriceFilter";
-import axiosInstance from "../AxiosInstance";
 
-const FiltersContainer = ({ updateFilter, filters }) => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+const FiltersContainer = ({ filters, updateFilters, categories }) => {
   const [openFilter, setOpenFilter] = useState(null);
   const [mobileContainer, setMobileContainer] = useState(false);
-
-  useEffect(() => {
-    const fetchFilters = async () => {
-      try {
-        const res = await axiosInstance.get("/categories/all");
-        setCategories(res.data);
-      } catch (error) {
-        console.error("Failed to fetch filters:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFilters();
-  }, []);
+  console.log(filters);
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,32 +30,16 @@ const FiltersContainer = ({ updateFilter, filters }) => {
       if (mobileContainer) return id;
       return prevId === id ? null : id;
     });
-  };
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    const parsedValue = Array.isArray(value)
-      ? value.map((v) => (v === "true" ? true : v === "false" ? false : v))
-      : value;
-    updateFilter(name, parsedValue);
-  };
+  };  
 
   const filtersData = [
     {
       type: "categoryId",
       title: "Category",
-      options: categories.map((cat) => ({
-        id: cat.id,
-        label: cat.name,
-      })),
+      options: categories.map((cat) => ({ id: cat.id.toString(), label: cat.name })),
     },
-    {
-      type: "price",
-      title: "Price",
-    },
+    { type: "price", title: "Price" },
   ];
-
-  if (loading) return <Loading />;
 
   return (
     <div className="filtration">
@@ -83,25 +49,27 @@ const FiltersContainer = ({ updateFilter, filters }) => {
         </div>
         <div className="filters">
           <div className="scrollbar">
-            {filtersData.map((_filter, index) =>
-              _filter.type === "price" ? (
+            {filtersData.map((f, idx) =>
+              f.type === "price" ? (
                 <PriceFilter
-                  key={index}
-                  updateFilter={updateFilter}
-                  onToggle={() => handleToggle(index)}
-                  isOpen={openFilter === index}
-                  title={_filter.title}
+                  key={idx}
+                  isOpen={openFilter === idx}
+                  title={f.title}
+                  //minPrice={filters.minPrice}
+                  //maxPrice={filters.maxPrice}
+                  onChange={(range) => updateFilters(range)}
+                  onToggle={() => handleToggle(idx)}
                 />
               ) : (
                 <Filter
-                  key={index}
-                  type={_filter.type}
-                  options={_filter.options}
-                  onChange={handleFilterChange}
-                  isOpen={openFilter === index}
-                  onToggle={() => handleToggle(index)}
-                  title={_filter.title}
-                  selectedOptions={filters[_filter.type] || []}
+                key={idx}
+                type={f.type}
+                title={f.title}
+                options={f.options}
+                selected={filters.categoriesIds}
+                onChange={(arr) => updateFilters({ categoriesIds: arr })}
+                isOpen={openFilter === idx}
+                onToggle={() => handleToggle(idx)}
                 />
               )
             )}

@@ -1,67 +1,72 @@
-import React, { useState, useEffect } from "react";
-import { DropdownContainer, Button } from "../Components";
+import React, { useEffect, useState } from "react";
+import { DropdownContainer } from "../Components";
 import axiosInstance from "../AxiosInstance";
 
-const PriceFilter = ({ updateFilter, isOpen, onToggle, title }) => {
-  const [price, setPrice] = useState(0);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  const fetchAllProducts = async () => {
-    try {
-      const response = await axiosInstance.post("/products/list", {});
-      const products = response.data;
-
-      if (products.length > 0) {
-        const discountedPrices = products.map((product) =>
-          product.discount
-            ? Math.round(
-                product.price - product.price * (product.discount / 100)
-              )
-            : Math.round(product.price)
-        );
-
-        const min = Math.min(...discountedPrices);
-        const max = Math.max(...discountedPrices);
-
-        setMinPrice(min);
-        setMaxPrice(max);
-        setPrice(max);
-      }
-    } catch (error) {
-      console.error("Failed to fetch products for price filter:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const PriceFilter = ({
+  isOpen,
+  title,
+  minPrice: propMin,
+  maxPrice: propMax,
+  onChange,
+  onToggle,
+}) => {
+  const [minPrice, setMinPrice] = useState(propMin ?? 0);
+  const [maxPrice, setMaxPrice] = useState(propMax ?? 0);
+  const [price, setPrice]       = useState(propMax ?? 0);
+  const [loading, setLoading]   = useState(propMin == null || propMax == null);
 
   useEffect(() => {
+    const fetchAllProducts = async () => {
+      if (propMin != null && propMax != null) return;
+
+      try {
+        const res = await axiosInstance.post("/products/list", {});
+        const products = res.data;
+
+        if (products.length) {
+          const prices = products.map((p) =>
+            p.discount
+              ? Math.round(p.price - p.price * (p.discount / 100))
+              : Math.round(p.price)
+          );
+
+          const min = Math.min(...prices);
+          const max = Math.max(...prices);
+
+          setMinPrice(min);
+          setMaxPrice(max);
+          setPrice(max);
+        }
+      } catch (err) {
+        console.error("Failed to fetch products for price filter:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAllProducts();
-  }, []);
+  }, [propMin, propMax]);
 
-  const handlePriceChange = (e) => {
-    setPrice(Number(e.target.value));
-  };
+  const handlePriceChange = (e) => setPrice(Number(e.target.value));
 
-  const handleSubmit = () => {
-    updateFilter("price", price);
-  };
+  const handleSubmit = () =>
+    onChange?.({ minPrice, maxPrice: price });
 
   const handleReset = () => {
     setPrice(maxPrice);
-    updateFilter("price", maxPrice);
+    onChange?.({ minPrice, maxPrice });
   };
 
   return (
-    <DropdownContainer title={title} onToggle={onToggle} isOpen={isOpen}>
+    <DropdownContainer title={title} isOpen={isOpen} onToggle={onToggle}>
       <div className="list-head price">
         <div className="part reset" onClick={handleReset}>
           Reset
         </div>
       </div>
+
       {loading ? (
-        <p className="b2">Loading...</p>
+        <p className="b2">Loading…</p>
       ) : (
         <div className="checkboxes">
           <input
