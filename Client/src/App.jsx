@@ -7,6 +7,7 @@ import ItemDetails from "./components/ItemDetails/ItemDetails";
 import LoginPage from "./components/Login/LoginPage";
 import Cart from "./components/ItemDetails/Cart";
 import AdminPage from "./components/Admin/AdminPage";
+import ProductManage from "./components/Admin/ProductManage";
 
 const App = () => {
   return (
@@ -19,7 +20,10 @@ const App = () => {
         <Route path="/item/:id" element={<ItemDetails />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminPage />}>
+          <Route index element={<ProductManage />} />
+          <Route path="products" element={<ProductManage />} />
+        </Route>
       </Routes>
     </Router>
   );

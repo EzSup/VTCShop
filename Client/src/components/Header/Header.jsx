@@ -30,7 +30,6 @@ const Header = () => {
 
   return (
     <header className="header-with_promo">
-      <PromoDiv />
       <div className="header">
         <div className="wrap">
           <div className="header-part left-part">
@@ -54,7 +53,9 @@ const Header = () => {
                 <MoreDiv Class="p2" />
               </ul>
             ) : (
-              <BurgerMenu OnClick = {() => HandleShowModal("Error: Page Not Found")}/>
+              <BurgerMenu
+                OnClick={() => HandleShowModal("Error: Page Not Found")}
+              />
             )}
           </div>
           <div className="nav_logo">
@@ -67,8 +68,8 @@ const Header = () => {
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="search"
               />
-              <HeaderHref 
-                Href="/login/" 
+              <HeaderHref
+                Href="/login/"
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="user"
               />
@@ -220,10 +221,7 @@ const BurgerMenu = ({ OnClick }) => {
         </ul>
       </div>
       <ul>
-      <HeaderHref
-        onClick={OnClick}
-        Class="search"
-      />
+        <HeaderHref onClick={OnClick} Class="search" />
       </ul>
     </>
   );
