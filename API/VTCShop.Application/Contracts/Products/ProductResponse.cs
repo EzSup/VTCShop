@@ -10,6 +10,7 @@ namespace VTCShop.Contracts
         public string? Description { get; set; }
         public string? Features { get; set; }
         public bool SupportsSizes { get; set; }
+        public int CategoryId { get; set; }
         public List<SizeEnum> AvailableSizes { get; set; }
     }
 }

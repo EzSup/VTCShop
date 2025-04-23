@@ -48,7 +48,7 @@ namespace VTCShop.Endpoints
 
                               if (result)
                               {
-                                  await signInManager.SignInAsync(user, false);
+                                  await signInManager.SignInAsync(user, true);
                                   return Results.Ok(new LogInResponse(user.UserName == "admin", user.UserName));
                               }
 

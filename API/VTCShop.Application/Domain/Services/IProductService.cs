@@ -11,7 +11,7 @@ namespace VTCShop.Application.Domain.Services
         Task<ProductResponse?> GetById(int id);
         Task<int> Create(ProductCreateRequest request);
         Task Update(ProductUpdateRequest request);
-        Task UpdateImage(int productId, IFormFile imageFile);
+        Task<string?> UpdateImage(int productId, IFormFile imageFile);
         Task Delete(int productId);
     }
 }

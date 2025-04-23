@@ -72,16 +72,7 @@ namespace VTCShop.Application.BLL
             product.Price = request.Price;
             product.SupportsSizes = request.SupportsSizes;
             product.AvailableSizes = request.AvailableSizes;
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateImage(int productId, IFormFile imageFile)
-        {
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null)
-                return;
-            product.ImageKey = await _fileStorageRepository.UploadFileAsync(imageFile, _folderName, null);
+            product.Features = request.Features;
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
@@ -134,6 +125,17 @@ namespace VTCShop.Application.BLL
 
 
             return await GetBestSellersAsync(mapped);
+        }
+
+        public async Task<string?> UpdateImage(int productId, IFormFile imageFile)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+                return null;
+            product.ImageKey = await _fileStorageRepository.UploadFileAsync(imageFile, _folderName, null);
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return await _fileStorageRepository.GetObjectTempUrlAsync(product.ImageKey);
         }
 
         private async Task<IEnumerable<ProductInListResponse>> GetBestSellersAsync(IEnumerable<ProductInListResponse> input)

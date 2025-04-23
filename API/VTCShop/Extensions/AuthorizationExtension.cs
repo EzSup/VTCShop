@@ -19,7 +19,7 @@ namespace VTCShop.Extensions
                             SaveSigninToken = true,
                             ValidateIssuer = true,
                             ValidateAudience = false,
-                            ValidateLifetime = true,
+                            ValidateLifetime = false,
                             ValidateIssuerSigningKey = true,
                             ValidIssuer = "https://localhost:5000",
                             ValidAudience = "https://localhost:3000",

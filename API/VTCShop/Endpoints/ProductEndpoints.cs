@@ -51,11 +51,11 @@ namespace VTCShop.Endpoints
 
             group.MapPatch("addImage", async (IProductService productService, int productId, [FromForm]IFormFile image) =>
                  {
-                     await productService.UpdateImage(productId, image);
-                     return Results.Ok();
+                     return Results.Ok(await productService.UpdateImage(productId, image));
                  })
                  .DisableAntiforgery()
-                 .RequireAuthorization("AdminOnly");
+                 .RequireAuthorization("AdminOnly")
+                 .Produces<string>();
 
             group.MapDelete("", async (IProductService productService, int id) =>
             {

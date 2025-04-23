@@ -21,7 +21,7 @@ namespace VTCShop.Application.DAL.Models
         public int? CategoryId { get; set; }
 
         public bool SupportsSizes { get; set; }
-        public IEnumerable<SizeEnum> AvailableSizes { get; set; } = [];
+        public List<SizeEnum> AvailableSizes { get; set; } = [];
         public bool IsSellingFastMarked { get; set; }
         public CategoryEntity? Category { get; set; }
 
