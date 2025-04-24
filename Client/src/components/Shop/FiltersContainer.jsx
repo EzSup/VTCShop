@@ -5,7 +5,6 @@ import PriceFilter from "./PriceFilter";
 const FiltersContainer = ({ filters, updateFilters, categories }) => {
   const [openFilter, setOpenFilter] = useState(null);
   const [mobileContainer, setMobileContainer] = useState(false);
-  console.log(filters);
 
   useEffect(() => {
     const handleResize = () => {
