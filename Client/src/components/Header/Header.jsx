@@ -2,10 +2,17 @@ import { useState, useEffect } from "react";
 import "./header.scss";
 import { Message } from "../Components";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [loggedin, setLoggedin] = useState();
+
+  useEffect(() => {
+    setLoggedin(isLoggedIn);
+  }, [isLoggedIn]);
 
   const HandleShowModal = (text) => {
     setModalText(text);
@@ -56,7 +63,7 @@ const Header = () => {
           </div>
           <div className="header-part right-part">
             <ul>
-              <HeaderHref Href="/Collection/" Class="cart" />
+              {loggedin ? <HeaderHref Href="/cart/" Class="cart" /> : ""}
               <HeaderHref
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="search"

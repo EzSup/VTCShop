@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Header,
   Footer,
@@ -149,6 +150,7 @@ const AddToCard = ({ item, sizeIdx, sizeCode }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
   const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const changeCount = (delta) =>
     setCount((c) => Math.min(99, Math.max(1, c + delta)));
@@ -200,10 +202,12 @@ const AddToCard = ({ item, sizeIdx, sizeCode }) => {
         <Button
           Onclick={handleAddToCart}
           className={`${
-            item.supportsSizes && sizeIdx == null ? "disabled" : ""
+            (item.supportsSizes && sizeIdx == null || !isLoggedIn) ? "disabled" : ""
           }`}
         >
-          {item.supportsSizes && sizeIdx == null
+          {!isLoggedIn
+            ? "Увійдіть для продовження"
+            : item.supportsSizes && sizeIdx == null
             ? "Оберіть розмір"
             : "До кошика"}
         </Button>
