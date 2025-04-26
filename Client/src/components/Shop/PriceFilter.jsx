@@ -12,8 +12,8 @@ const PriceFilter = ({
 }) => {
   const [minPrice, setMinPrice] = useState(propMin ?? 0);
   const [maxPrice, setMaxPrice] = useState(propMax ?? 0);
-  const [price, setPrice]       = useState(propMax ?? 0);
-  const [loading, setLoading]   = useState(propMin == null || propMax == null);
+  const [price, setPrice] = useState(propMax ?? 0);
+  const [loading, setLoading] = useState(propMin == null || propMax == null);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -49,8 +49,7 @@ const PriceFilter = ({
 
   const handlePriceChange = (e) => setPrice(Number(e.target.value));
 
-  const handleSubmit = () =>
-    onChange?.({ minPrice, maxPrice: price });
+  const handleSubmit = () => onChange?.({ minPrice, maxPrice: price });
 
   const handleReset = () => {
     setPrice(maxPrice);
@@ -61,12 +60,12 @@ const PriceFilter = ({
     <DropdownContainer title={title} isOpen={isOpen} onToggle={onToggle}>
       <div className="list-head price">
         <div className="part reset" onClick={handleReset}>
-          Reset
+          Очистити
         </div>
       </div>
 
       {loading ? (
-        <p className="b2">Loading…</p>
+        <p className="b2">Завантаження…</p>
       ) : (
         <div className="checkboxes">
           <input
@@ -76,7 +75,7 @@ const PriceFilter = ({
             value={price}
             onChange={handlePriceChange}
           />
-          <p className="b2">Selected Price: ${price}</p>
+          <p className="b2">Обрана ціна: {price}₴</p>
           <button
             onClick={handleSubmit}
             className="pargraph default submit-button"

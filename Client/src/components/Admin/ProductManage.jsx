@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../AxiosInstance";
 import SendIcon from "@mui/icons-material/Send";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Typography,
@@ -244,8 +246,9 @@ const ProductManage = () => {
                     color="success"
                     sx={{ marginLeft: "10px" }}
                     onClick={() => setCreateWindowOpen(true)}
+                    startIcon={<AddIcon />}
                   >
-                    Create
+                    Створити
                   </Button>
                 </TableCell>
               </TableRow>
@@ -263,7 +266,7 @@ const ProductManage = () => {
                       size="small"
                       onClick={() => handleSelectItem(row)}
                     >
-                      Edit
+                      Редагувати
                     </Button>
                     <Button
                       variant="outlined"
@@ -271,8 +274,9 @@ const ProductManage = () => {
                       size="small"
                       sx={{ ml: 1 }}
                       onClick={() => handleDelete(row.id)}
+                      startIcon={<DeleteIcon />}
                     >
-                      Delete
+                      Видалити
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -290,7 +294,7 @@ const ProductManage = () => {
       <Grid item xs={12} md={4} maxWidth={500}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="h6" gutterBottom>
-            {selectedItem ? "Edit User" : "Select a User"}
+            {selectedItem ? "Редагувати продукт" : "Оберіть продукт"}
           </Typography>
           {selectedItem ? (
             <>
@@ -307,7 +311,7 @@ const ProductManage = () => {
                 endIcon={<SendIcon />}
                 sx={{ mb: 2 }}
               >
-                Upload Image
+                Завантажити зображення
                 <input
                   type="file"
                   accept="image/*"
@@ -317,7 +321,7 @@ const ProductManage = () => {
               </Button>
               <TextField
                 fullWidth
-                label="Name"
+                label="Назва"
                 name="name"
                 value={formData.name}
                 onChange={handleFormChange}
@@ -325,7 +329,7 @@ const ProductManage = () => {
               />
               <TextField
                 fullWidth
-                label="Price"
+                label="Ціна"
                 name="price"
                 type="number"
                 value={formData.price}
@@ -334,7 +338,7 @@ const ProductManage = () => {
               />
               <TextField
                 fullWidth
-                label="Description"
+                label="Опис"
                 name="description"
                 multiline
                 rows={4}
@@ -344,7 +348,7 @@ const ProductManage = () => {
               />
               <TextField
                 fullWidth
-                label="Features"
+                label="Особливості"
                 name="features"
                 multiline
                 rows={4}
@@ -353,7 +357,7 @@ const ProductManage = () => {
                 margin="normal"
               />
               <FormControl fullWidth margin="normal">
-                <InputLabel id="category-select-label">Category</InputLabel>
+                <InputLabel id="category-select-label">Категорія</InputLabel>
                 <NativeSelect
                   labelId="category-select-label"
                   name="categoryId"
@@ -376,11 +380,11 @@ const ProductManage = () => {
                     onChange={handleFormChange}
                   />
                 }
-                label="Supports Sizes"
+                label="Підтримка розмірів"
               />
               {formData.supportsSizes && (
                 <FormControl component="fieldset" margin="normal">
-                  <Typography variant="subtitle1">Available Sizes</Typography>
+                  <Typography variant="subtitle1">Доступні розміри</Typography>
                   <FormGroup row>
                     {SIZE_OPTIONS.map((size) => (
                       <FormControlLabel
@@ -407,7 +411,7 @@ const ProductManage = () => {
                   color="primary"
                   onClick={handleSave}
                 >
-                  Save
+                  Зберегти
                 </Button>
                 <Button
                   variant="outlined"
@@ -426,13 +430,14 @@ const ProductManage = () => {
                   }}
                   sx={{ ml: 1 }}
                 >
-                  Cancel
+                  Відмінити
                 </Button>
               </Box>
             </>
           ) : (
             <Typography color="text.secondary">
-              Click "Edit" on a product to modify its details.
+              Натисніть "Редагувати" на продукт для його редагування та
+              перегляду деталей.
             </Typography>
           )}
         </Paper>

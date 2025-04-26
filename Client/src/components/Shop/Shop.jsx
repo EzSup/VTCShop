@@ -90,7 +90,7 @@ const ItemsWrap = ({ items }) => {
       {items.map((item, index) => (
         <Item key={index} {...item}>
           <Button key={item.id} Onclick={() => goToItemDetails(item)}>
-            Quick Add <span>+</span>
+            Переглянути
           </Button>
         </Item>
       ))}

@@ -29,22 +29,25 @@ const FiltersContainer = ({ filters, updateFilters, categories }) => {
       if (mobileContainer) return id;
       return prevId === id ? null : id;
     });
-  };  
+  };
 
   const filtersData = [
     {
       type: "categoryId",
-      title: "Category",
-      options: categories.map((cat) => ({ id: cat.id.toString(), label: cat.name })),
+      title: "Категорія",
+      options: categories.map((cat) => ({
+        id: cat.id.toString(),
+        label: cat.name,
+      })),
     },
-    { type: "price", title: "Price" },
+    { type: "price", title: "Ціна" },
   ];
 
   return (
     <div className="filtration">
       <div className="filteredBy frame">
         <div className="title">
-          <p className="p1">Filtered By</p>
+          <p className="p1">Фільтр</p>
         </div>
         <div className="filters">
           <div className="scrollbar">
@@ -61,14 +64,14 @@ const FiltersContainer = ({ filters, updateFilters, categories }) => {
                 />
               ) : (
                 <Filter
-                key={idx}
-                type={f.type}
-                title={f.title}
-                options={f.options}
-                selected={filters.categoriesIds}
-                onChange={(arr) => updateFilters({ categoriesIds: arr })}
-                isOpen={openFilter === idx}
-                onToggle={() => handleToggle(idx)}
+                  key={idx}
+                  type={f.type}
+                  title={f.title}
+                  options={f.options}
+                  selected={filters.categoriesIds}
+                  onChange={(arr) => updateFilters({ categoriesIds: arr })}
+                  isOpen={openFilter === idx}
+                  onToggle={() => handleToggle(idx)}
                 />
               )
             )}

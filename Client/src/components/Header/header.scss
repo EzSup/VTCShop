@@ -28,7 +28,8 @@
 }
 .header {
   height: 78px;
-  //background: #e4e4e7d1;
+  background: #e4e4e7d1;
+  font-weight: bold;
   .wrap {
     display: flex;
     flex-direction: row;
@@ -120,7 +121,8 @@
       height: 100%;
       width: 100%;
       background-size: contain;
-      background: url("/Dev_test-react/Logo/Text/Black.png") no-repeat center center;
+      background: url("/Dev_test-react/Logo/Text/Black.png") no-repeat center
+        center;
       transition: all 0.5s;
       &:hover {
         transform: scaleX(1.05);

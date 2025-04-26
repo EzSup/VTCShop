@@ -6,25 +6,30 @@ const Footer = () => {
       <div className={classes["footer-wrap"]}>
         <div className={classes["top-part"]}>
           <div className={classes["Footer-nav"]}>
-            <NavFrame title={"shop"}>
-              <TextBlock A>Best Sellers</TextBlock>
-              <TextBlock A>Crew Neck</TextBlock>
-              <TextBlock A>V - Neck</TextBlock>
-              <TextBlock A>Bundle Builder</TextBlock>
+            <NavFrame title={"в наявності"}>
+              <TextBlock A>Худі</TextBlock>
+              <TextBlock A>Футболки</TextBlock>
+              <TextBlock A>Канцтовари</TextBlock>
+              <TextBlock A>Аксесуари</TextBlock>
             </NavFrame>
-            <NavFrame title={"contact"}>
+            <NavFrame title={"контакти"}>
               <TextBlock P>Palm St, 456</TextBlock>
               <TextBlock P>London, UK</TextBlock>
               <TextBlock A>+ (345) 789 89 98</TextBlock>
             </NavFrame>
-            <NavFrame title={"more info"}>
-              <TextBlock A>Blog</TextBlock>
-              <TextBlock A>Terms and conditions</TextBlock>
-              <TextBlock A>Private Policy</TextBlock>
+            <NavFrame title={"у співпраці із"}>
+              <TextBlock A>Microsoft</TextBlock>
+              <TextBlock A>Google</TextBlock>
+              <TextBlock A>Cisco</TextBlock>
+              <TextBlock A>JetBrains</TextBlock>
             </NavFrame>
-            <NavFrame title={"get 10% of cashback"}>
+            <NavFrame title={"ми з вами зв'яжемось"}>
               <TextBlock>
-                <input placeholder="Your E-mail" type="email" className="p2"></input>
+                <input
+                  placeholder="Ваш E-mail"
+                  type="email"
+                  className="p2"
+                ></input>
               </TextBlock>
               <TextBlock>
                 <div className={classes.media}>
@@ -40,15 +45,15 @@ const Footer = () => {
           <div className={classes["bot-wrap"]}>
             <div className={classes["white-logo"]}></div>
             <div>
-              <p className="p2">© 2023 | Focused Fits | All Rights Reserved.</p>
+              <p className="p2">© 2025 | VTCShop | Всі права захищені.</p>
             </div>
           </div>
         </div>
       </div>
     </footer>
   );
-}
-export default Footer
+};
+export default Footer;
 
 const NavFrame = ({ title, children }) => {
   return (
@@ -61,7 +66,7 @@ const NavFrame = ({ title, children }) => {
       </div>
     </div>
   );
-}
+};
 
 const TextBlock = ({ P, A, children, href = "#" }) => {
   return (
@@ -75,4 +80,4 @@ const TextBlock = ({ P, A, children, href = "#" }) => {
       {!P && !A && <span>{children}</span>}
     </li>
   );
-}
+};

@@ -1,6 +1,14 @@
 import { DropdownContainer } from "../Components";
 
-const Filter = ({ type, options, title, isOpen, onToggle, selected = [], onChange }) => {
+const Filter = ({
+  type,
+  options,
+  title,
+  isOpen,
+  onToggle,
+  selected = [],
+  onChange,
+}) => {
   const toggleOption = (id) => {
     const next = selected.includes(id)
       ? selected.filter((v) => v !== id)
@@ -11,10 +19,16 @@ const Filter = ({ type, options, title, isOpen, onToggle, selected = [], onChang
   const handleReset = () => onChange([]);
 
   return (
-    <DropdownContainer title={`${title} (${selected.length || 0})`} isOpen={isOpen} onToggle={onToggle}>
+    <DropdownContainer
+      title={`${title} (${selected.length || 0})`}
+      isOpen={isOpen}
+      onToggle={onToggle}
+    >
       <div className="list-head">
-        <div className="part counter">{selected.length} selected</div>
-        <div className="part reset" onClick={handleReset}>Reset</div>
+        <div className="part counter">{selected.length} обрано</div>
+        <div className="part reset" onClick={handleReset}>
+          Очистити
+        </div>
       </div>
 
       <div className="checkboxes">

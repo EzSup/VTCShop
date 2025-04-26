@@ -43,7 +43,14 @@ const Item = ({
       <div className="item-wrap">
         <div className="preview">
           <div className="preview-image">
-            <div style={{ backgroundImage: `url(${imageLink})` }}></div>
+            <div
+              style={{
+                backgroundImage: `url(${imageLink})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
           </div>
           {!children ? (
             <>
@@ -71,7 +78,7 @@ const Item = ({
               ) : (
                 <div className="hover_container">
                   <Button Onclick={() => goToItemDetails(id)}>
-                    Quick Add <span>+</span>
+                    Переглянути
                   </Button>
                 </div>
               )}
@@ -119,7 +126,7 @@ const TagsDiv = ({ Color, children }) => {
 const ItemPrice = ({ _HasDiscount, _price }) => {
   return (
     <div className="price">
-      <p className="S12_L20">${_price}</p>
+      <p className="S12_L20">₴{_price}</p>
     </div>
   );
 };

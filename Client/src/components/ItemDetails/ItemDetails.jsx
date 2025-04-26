@@ -53,7 +53,7 @@ const ItemPhotos = ({ item }) => {
         <Item {...item} preview={mainPhoto} />
       </div>
 
-      <div className="other_photos">
+      {/* <div className="other_photos">
         <img
           src={item.imageLink}
           alt="main"
@@ -67,7 +67,7 @@ const ItemPhotos = ({ item }) => {
             onClick={() => setMainPhoto(photo)}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -76,18 +76,16 @@ const ItemDescription = ({ item }) => {
   console.log(item);
   const sizeCodes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
   const sizeTitles = [
-    "Small",
-    "Medium",
-    "Large",
-    "Extra Large",
-    "Extra Extra Large",
-    "3 Extra Large",
-    "4 Extra Large",
+    "Малий",
+    "Середній",
+    "Великий",
+    "Extra Великий",
+    "2 Extra Великий",
+    "3 Extra Великий",
+    "4 Extra Великий",
   ];
 
-  const available = item.supportsSizes
-    ? item.availableSizes.map(Number)
-    : [];
+  const available = item.supportsSizes ? item.availableSizes.map(Number) : [];
 
   const [selected, setSelected] = useState(null);
 
@@ -101,7 +99,7 @@ const ItemDescription = ({ item }) => {
           {item.supportsSizes ? (
             <div className="sizelist">
               <div className="current_size">
-                <span className="System S12_L20 UpC"> size: </span>
+                <span className="System S12_L20 UpC"> розмір: </span>
                 <span className="p2">
                   {selected != null ? sizeTitles[selected] : "—"}
                 </span>
@@ -200,8 +198,8 @@ const AddToCard = ({ item, sizeIdx, sizeCode }) => {
           }`}
         >
           {item.supportsSizes && sizeIdx == null
-            ? "Select the Size"
-            : "Add to Cart"}
+            ? "Оберіть розмір"
+            : "До кошика"}
         </Button>
         <Message
           open={modalOpen}
@@ -229,7 +227,7 @@ const Details = (item) => {
     <div className="dropdown_container">
       <DropDown
         IsOpened={openedDiv === 1}
-        title="Product details"
+        title="Опис"
         OnClick={() => toggleOpenedDiv(1)}
       >
         {description.map((paragraph, index) => (
@@ -240,7 +238,7 @@ const Details = (item) => {
       </DropDown>
       <DropDown
         IsOpened={openedDiv === 2}
-        title="Product features"
+        title="Особливості товару"
         OnClick={() => toggleOpenedDiv(2)}
       >
         <ul>

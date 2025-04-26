@@ -8,7 +8,7 @@ const BestSellers = () => {
   return (
     <section className="best-seller">
       <div className="wrap">
-        <Title Href="/Collection" title="Best Sellers" />
+        <Title Href="/Collection" title="Топ продажів" />
         <ScrollContainer />
       </div>
     </section>

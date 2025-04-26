@@ -20,6 +20,10 @@ import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
   Settings as SettingsIcon,
+  Logout as LogoutIcon,
+  ShoppingBasket as PurchasesIcon,
+  Inventory as ProductIcon,
+  Inventory,
 } from "@mui/icons-material";
 
 const drawerWidth = 240;
@@ -56,7 +60,7 @@ const AdminPage = () => {
 
   const handleItemClick = async (itemText) => {
     switch (itemText) {
-      case "LogOut":
+      case "Вийти":
         await handleLogOut();
     }
   };
@@ -77,15 +81,15 @@ const AdminPage = () => {
       >
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Admin Panel
+            Панель керування
           </Typography>
         </Toolbar>
         <Divider />
         <List>
           {[
-            { text: "Dashboard", icon: <DashboardIcon /> },
-            { text: "Products", icon: <PeopleIcon /> },
-            { text: "LogOut", icon: <SettingsIcon /> },
+            { text: "Товари", icon: <Inventory /> },
+            { text: "Покупки", icon: <PeopleIcon /> },
+            { text: "Вийти", icon: <LogoutIcon /> },
           ].map((item) => (
             <ListItem
               button
