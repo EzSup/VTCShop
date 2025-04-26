@@ -3,7 +3,7 @@
   height: 700px;
   overflow: hidden;
   justify-content: center;
-  max-width: 1900px;
+  max-width: 1780px;
   margin: 0 auto;
   .wrap {
     display: flex;
@@ -55,15 +55,6 @@
         position: absolute;
         content: " ";
       }
-    }
-  }
-
-  @media screen and (min-width: 1840px) {
-    .scroll-container {
-      overflow: hidden !important;
-    }
-    .customScrollbar {
-      display: none;
     }
   }
 }

@@ -2,7 +2,7 @@ import Filter from "./Filters";
 import { useEffect, useState } from "react";
 import PriceFilter from "./PriceFilter";
 
-const FiltersContainer = ({ filters, updateFilters, categories }) => {
+const FiltersContainer = ({ filters, updateFilters, categories, sizes }) => {
   const [openFilter, setOpenFilter] = useState(null);
   const [mobileContainer, setMobileContainer] = useState(false);
 
@@ -35,12 +35,21 @@ const FiltersContainer = ({ filters, updateFilters, categories }) => {
     {
       type: "categoryId",
       title: "Категорія",
-      options: categories.map((cat) => ({
-        id: cat.id.toString(),
-        label: cat.name,
-      })),
+      options: categories.map((cat) => ({ id: cat.id.toString(), label: cat.name })),
+      selected: filters.categoriesIds,
+      onChange: (arr) => updateFilters({ categoriesIds: arr }),
     },
-    { type: "price", title: "Ціна" },
+    { 
+      type: "price", 
+      title: "Ціна" 
+    },
+    {
+      type: "size",
+      title: "Розмір",
+      options: sizes.map((size) => ({ id: size, label: size })),
+      selected: filters.sizes,
+      onChange: (arr) => updateFilters({ sizes: arr }),
+    }
   ];
 
   return (
@@ -57,8 +66,6 @@ const FiltersContainer = ({ filters, updateFilters, categories }) => {
                   key={idx}
                   isOpen={openFilter === idx}
                   title={f.title}
-                  //minPrice={filters.minPrice}
-                  //maxPrice={filters.maxPrice}
                   onChange={(range) => updateFilters(range)}
                   onToggle={() => handleToggle(idx)}
                 />
@@ -68,8 +75,8 @@ const FiltersContainer = ({ filters, updateFilters, categories }) => {
                   type={f.type}
                   title={f.title}
                   options={f.options}
-                  selected={filters.categoriesIds}
-                  onChange={(arr) => updateFilters({ categoriesIds: arr })}
+                  selected={f.selected}
+                  onChange={(arr) => f.onChange(arr)} 
                   isOpen={openFilter === idx}
                   onToggle={() => handleToggle(idx)}
                 />

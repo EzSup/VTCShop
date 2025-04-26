@@ -1,28 +1,7 @@
-import { useEffect, useState } from "react";
-import axiosInstance from "../AxiosInstance";
+import useFetch from "../useFetch";
 
 const useCategories = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
-      try {
-        const res = await axiosInstance.get("/categories/all");
-        setCategories(res.data);
-      } catch (err) {
-        console.error("Error fetching categories:", err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
+  const { data: categories, loading, error } = useFetch("/categories/all");
   return { categories, loading, error };
 };
 

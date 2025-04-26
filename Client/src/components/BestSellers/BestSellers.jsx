@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import Item from "../Items/Item";
 import "./bestSellers.scss";
 import GetData from "../GetData";
+import useBestSellers from "./useBestSellers";
 import { SectionTitle as Title, Loading } from "../Components";
 
 const BestSellers = () => {
@@ -25,21 +26,24 @@ const ScrollContainer = () => {
     scrollbarThumbRef
   );
 
-  const { items, loading } = GetData({ name: "items" });
+  const { data: items, loading, error } = useBestSellers();
   const [bestSellers, setBestSellers] = useState([]);
 
+
   useEffect(() => {
-    if (items.length > 5) {
-      const randomSelection = items.sort(() => 0.5 - Math.random()).slice(0, 5);
-      setBestSellers(randomSelection);
+    if(items) {
+      const rand = [...items].sort(() => Math.random() - 0.5);
+    setBestSellers(rand);
     }
   }, [items]);
+  
 
   const handleScroll = useCallback(() => {
     updateThumbPosition();
   }, [updateThumbPosition]);
 
   if (loading) return <Loading />;
+  if (error) console.log(error);
 
   return (
     <div className="scroll-wrapper">

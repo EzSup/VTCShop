@@ -9,9 +9,8 @@ const useProducts = ({ filters }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      setError(null); // reset error on new request
+      setError(null);
       try {
-        // Динамічні значення для minPrice і maxPrice
         const payload = {
           categoriesIds: filters.categoriesIds || [],
           sizes: filters.sizes || [],

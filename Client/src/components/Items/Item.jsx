@@ -22,17 +22,17 @@ const Item = ({
   const sizeLabels = allSizes.map((sizeId) => {
     switch (sizeId) {
       case 1:
-        return "XS";
-      case 2:
         return "S";
-      case 3:
+      case 2:
         return "M";
-      case 4:
+      case 3:
         return "L";
-      case 5:
+      case 4:
         return "XL";
-      case 6:
+      case 5:
         return "2XL";
+      case 6:
+        return "3XL";
       default:
         return "Unknown Size";
     }
@@ -67,7 +67,6 @@ const Item = ({
                           ? null
                           : () => {
                               goToItemDetails(id);
-                              console.log(`${name} ${size}`);
                             }
                       }
                     >
@@ -76,7 +75,7 @@ const Item = ({
                   ))}
                 </div>
               ) : (
-                <div className="hover_container">
+                <div className="hover_container quick_add">
                   <Button Onclick={() => goToItemDetails(id)}>
                     Переглянути
                   </Button>

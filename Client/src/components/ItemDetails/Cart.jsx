@@ -1,25 +1,16 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../AxiosInstance";
-import {
-  Header,
-  Footer,
-  Loading,
-  Button,
-  Message,
-  DropdownContainer,
-  HeroSection,
-} from "../Components";
-import { useLocation } from "react-router-dom";
+import { Header, Footer, Button, Message, HeroSection } from "../Components";
 import { BestSellers, SectionTitle as Title, Resp } from "../Components";
-import "./cart.scss"
+import "./cart.scss";
 
 const Cart = () => {
-
   return (
     <>
       <Header />
-      <HeroSection className="Container_OnlyTitle" BgClass="Cart_Hero"/>
-      <CartSection/>
+      <HeroSection className="Container_OnlyTitle" BgClass="Cart_Hero" />
+      <CartSection />
+      <BestSellers />
       <Footer />
     </>
   );
@@ -36,6 +27,8 @@ const CartSection = () => {
   const [shippingAddress, setShippingAddress] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalText, setModalText] = useState("");
 
   const fetchCart = async () => {
     try {
@@ -54,7 +47,9 @@ const CartSection = () => {
   const handleQuantityChange = async (productId, newQuantity) => {
     if (newQuantity < 1 || newQuantity > 99) return;
     try {
-      await axiosInstance.patch(`/cart?productId=${productId}&newQuantity=${newQuantity}`);
+      await axiosInstance.patch(
+        `/cart?productId=${productId}&newQuantity=${newQuantity}`
+      );
       fetchCart();
     } catch (err) {
       console.error("Помилка при зміні кількості:", err);
@@ -93,6 +88,7 @@ const CartSection = () => {
           onChange={(e) =>
             setUserData({ ...userData, fullName: e.target.value })
           }
+          required
         />
       ),
     },
@@ -104,6 +100,7 @@ const CartSection = () => {
           type="email"
           value={userData.email}
           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+          required
         />
       ),
     },
@@ -117,6 +114,7 @@ const CartSection = () => {
           onChange={(e) =>
             setUserData({ ...userData, phoneNumber: e.target.value })
           }
+          required
         />
       ),
     },
@@ -128,42 +126,98 @@ const CartSection = () => {
           type="text"
           value={shippingAddress}
           onChange={(e) => setShippingAddress(e.target.value)}
+          required
         />
       ),
     },
   ];
 
+  const handleSubmitOrder = async (e) => {
+    e.preventDefault();
+    try {
+      await axiosInstance.post("/order", {
+        shippingAddress,
+      });
+      setModalText("Замовлення підтверджено ✅");
+      setModalOpen(true);
+    } catch (err) {
+      console.error("Помилка при створенні замовлення:", err);
+      setModalText("Помилка при оформленні замовлення ❌");
+      setModalOpen(true);
+    }
+  };
+
+  const closeMessage = () => {
+    setModalOpen(false);
+  };
+
+  const sizeMap = {
+    1: "S",
+    2: "M",
+    3: "L",
+    4: "XL",
+    5: "2XL",
+    6: "3XL",
+  };
+
   return (
     <section className="cart-section">
       <Title title="Дані для замовлення">{null}</Title>
-      <div className="container">  
-        <div className="user-data cart_part">          
-          <div className="data">
+      <div className="container">
+        <div className="user-data cart_part">
+          <form className="data" onSubmit={handleSubmitOrder}>
             {containers.map((c, index) => (
-              <div className="inputbox">
-                <label className="input-title">{c.title}</label>
-                <div>{c.children}</div>                
+              <div className="inputbox" key={index}>
+                <label className="input-title p1">{c.title}</label>
+                <div>{c.children}</div>
               </div>
             ))}
-          </div>
+            <Button Width="100%" type="submit">
+              Підтвердити замовлення
+            </Button>
+          </form>
         </div>
         <div className="cart-items cart_part">
-          <Title title="Товари у кошику">{null}</Title>
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
-              <div key={index} className="cart-item" style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <div key={index} className="cart-item">
                 <img src={item.imageLink} alt={item.productName} width="80" />
                 <div>
-                  <p><strong>{item.productName}</strong></p>
-                  <p>Розмір: {item.size ?? "—"}</p>
-                  <p>Ціна за штуку: {item.priceForUnit} грн</p>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <button onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}>+</button>
-                    <button onClick={() => handleDelete(item.productId)} style={{ color: "red"}}>
-                    ❌ Видалити
-                  </button>
+                  <p className="p2 bold">{item.productName}</p>
+                  <p className="p2">Розмір: {sizeMap[item.size] ?? "—"}</p>
+                  <p className="p2">Ціна за штуку: {item.priceForUnit} грн</p>
+                  <div className="order_product_buttons">
+                    <div className="product_count">
+                      <button
+                        className="p1"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.productId,
+                            item.quantity - 1
+                          )
+                        }
+                      >
+                        -
+                      </button>
+                      <span className="p1">{item.quantity}</span>
+                      <button
+                        className="p1"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.productId,
+                            item.quantity + 1
+                          )
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      className="delete_button p1"
+                      onClick={() => handleDelete(item.productId)}
+                    >
+                      Видалити
+                    </button>
                   </div>
                 </div>
               </div>
@@ -171,23 +225,17 @@ const CartSection = () => {
           ) : (
             <p>Кошик порожній 🛒</p>
           )}
-          <h3>Загальна сума: {totalPrice} грн</h3>
+          <h3 className="System S18_L26">Загальна сума: {totalPrice} грн</h3>
         </div>
       </div>
-      <BestSellers />
+      <Message
+        open={modalOpen}
+        duration={2000}
+        onClose={closeMessage}
+        type="item_submit"
+      >
+        {modalText}
+      </Message>    
     </section>
   );
 };
-
-/*const handleRemoveFromCart = async () => {
-    await axiosInstance
-      .delete(`/cart?productId=${item.id}`)
-      .then(() => {
-        setCount(1);
-        setModalText("🗑️ Item removed from cart!");
-        setModalOpen(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };*/

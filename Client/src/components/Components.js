@@ -14,4 +14,3 @@ export {default as DropdownContainer} from "./DropdownContainer/DropdownContaine
 export {default as Message} from "./Message/Message";
 export {default as Resp} from "./Resp";
 export {default as Input} from "./Login/Input";
-export {default as useApiRequest} from "./useApiRequest"

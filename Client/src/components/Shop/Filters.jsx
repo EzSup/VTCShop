@@ -18,6 +18,15 @@ const Filter = ({
 
   const handleReset = () => onChange([]);
 
+  const sizeMap = {
+    1: "S",
+    2: "M",
+    3: "L",
+    4: "XL",
+    5: "2XL",
+    6: "3XL",
+  };
+
   return (
     <DropdownContainer
       title={`${title} (${selected.length || 0})`}
@@ -39,7 +48,7 @@ const Filter = ({
               checked={selected.includes(Number(id))}
               onChange={() => toggleOption(Number(id))}
             />
-            {label}
+            {type === "size" ? sizeMap[label] || label : label}
           </label>
         ))}
       </div>

@@ -38,7 +38,8 @@
       height: 540px;
     }
     .preview-image div {
-      background-size: auto 100%;
+      background-size: 100% auto;
+      background-position: center;
     }
     .sizelist {
       display: none;

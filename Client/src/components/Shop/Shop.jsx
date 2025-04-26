@@ -3,21 +3,70 @@ import Item from "../Items/Item";
 import { Loading, Button } from "../Components";
 import { useEffect, useState } from "react";
 import FiltersContainer from "./FiltersContainer";
+import SortContainer from "./SortContainer"
 import { useLocation, useNavigate } from "react-router-dom";
 import useProducts from "./useProducts";
 import useCategories from "./useCategories";
+import axiosInstance from "../AxiosInstance";
 
 const Shop = () => {
+  const [sortType, setSortType] = useState("default_byId");
+  const [sortedProducts, setSortedProducts] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [filtersView, setFiltersView] = useState(true);
   const [filters, setFilters] = useState({
     categoriesIds: [],
-    //sizes: [],
     minPrice: 0,
     maxPrice: 999999,
   });
   const { products, loading, error } = useProducts({ filters });
   const { categories, loading: catLoading } = useCategories();
+  const [sizes, setSizes] = useState([]);
+
+  console.log(products);
+
+  useEffect(() => {
+    setSortedProducts(products);
+  }, [products])
+
+  useEffect(() => {
+    let sorted = [...products];
+
+    if (sortType === "price_asc") {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (sortType === "price_desc") {
+      sorted.sort((a, b) => b.price - a.price);
+    } else if (sortType === "name_asc") {
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortType === "name_desc") {
+      sorted.sort((a, b) => b.title.localeCompare(a.title));
+    } else {
+      sorted = [...products];
+    }
+
+    setSortedProducts(sorted);
+  }, [sortType, products]);
+
+  const updateSort = (newSort) => {
+    setSortType(newSort);
+  };
+
+
+  useEffect(() => {
+    const fetchSizes = async () => {
+      try {
+        const response = await axiosInstance.post("/products/list", filters);
+        const allSizes = response.data.flatMap(product => product.availableSizes || []);
+        const uniqueSizes = Array.from(new Set(allSizes)).sort((a, b) => a - b);
+        setSizes(uniqueSizes);
+
+      } catch (error) {
+        console.error("Помилка при отриманні розмірів:", error);
+      }
+    };
+  
+    fetchSizes();
+  }, []);
 
   const updateFilters = (partial) =>
     setFilters((prev) => ({ ...prev, ...partial }));
@@ -61,12 +110,13 @@ const Shop = () => {
           filters={filters}
           updateFilters={updateFilters}
           categories={categories}
+          sizes={sizes}
         />
 
-        {/** <SortContainer ... />*/}
+        <SortContainer updateSort={updateSort} />
       </div>
       <div className={`items ${isExpanded ? "items-expanded" : ""}`}>
-        <ItemsWrap items={products} />
+        <ItemsWrap items={sortedProducts} />
       </div>
       {products.length > 6 && (
         <Button className="items_more" Onclick={HandleButtonClick} Width={200}>

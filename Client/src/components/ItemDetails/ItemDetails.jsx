@@ -73,17 +73,23 @@ const ItemPhotos = ({ item }) => {
 };
 
 const ItemDescription = ({ item }) => {
-  console.log(item);
-  const sizeCodes = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
-  const sizeTitles = [
-    "Малий",
-    "Середній",
-    "Великий",
-    "Extra Великий",
-    "2 Extra Великий",
-    "3 Extra Великий",
-    "4 Extra Великий",
-  ];
+  const sizeCodes = {
+    1: "S",
+    2: "M",
+    3: "L",
+    4: "XL",
+    5: "2XL",
+    6: "3XL",
+  };
+
+  const sizeTitles = {
+    1: "Small",
+    2: "Medium",
+    3: "Large",
+    4: "Extra Large",
+    5: "Extra Extra Large",
+    6: "3 Extra Large",
+  };
 
   const available = item.supportsSizes ? item.availableSizes.map(Number) : [];
 
@@ -105,15 +111,16 @@ const ItemDescription = ({ item }) => {
                 </span>
               </div>
               <div className="size_buttons">
-                {sizeCodes.map((code, idx) => {
-                  const disabled = !available.includes(idx);
+                {Object.entries(sizeCodes).map(([id, code]) => {
+                  id = Number(id);
+                  const disabled = !available.includes(id);
                   return (
                     <Button
-                      key={code}
+                      key={id}
                       className={`${disabled ? "sold" : ""} ${
-                        selected === idx ? "clicked" : ""
+                        selected === id ? "clicked" : ""
                       }`}
-                      Onclick={disabled ? null : () => setSelected(idx)}
+                      Onclick={disabled ? null : () => setSelected(id)}
                     >
                       {code}
                     </Button>
@@ -148,7 +155,6 @@ const AddToCard = ({ item, sizeIdx, sizeCode }) => {
 
   const handleAddToCart = async () => {
     if (item.supportsSizes && sizeIdx == null) return;
-    console.log(item.id, count, item.supportsSizes ? sizeIdx : null);
 
     try {
       await axiosInstance.post("/cart", {
