@@ -81,6 +81,7 @@ const ItemDescription = ({ item }) => {
     4: "XL",
     5: "2XL",
     6: "3XL",
+    7: "4XL",
   };
 
   const sizeTitles = {
@@ -90,6 +91,7 @@ const ItemDescription = ({ item }) => {
     4: "Extra Large",
     5: "Extra Extra Large",
     6: "3 Extra Large",
+    7: "4 Extra Large",
   };
 
   const available = item.supportsSizes ? item.availableSizes.map(Number) : [];
@@ -202,7 +204,9 @@ const AddToCard = ({ item, sizeIdx, sizeCode }) => {
         <Button
           Onclick={handleAddToCart}
           className={`${
-            (item.supportsSizes && sizeIdx == null || !isLoggedIn) ? "disabled" : ""
+            (item.supportsSizes && sizeIdx == null) || !isLoggedIn
+              ? "disabled"
+              : ""
           }`}
         >
           {!isLoggedIn

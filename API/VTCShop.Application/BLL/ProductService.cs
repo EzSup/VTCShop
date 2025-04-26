@@ -96,7 +96,7 @@ namespace VTCShop.Application.BLL
             }
             if (filtrationDto.sizes.Any())
             {
-                query = query.Where(x => x.AvailableSizes.Intersect(filtrationDto.sizes).Any());
+                query = query.Where(x => x.AvailableSizes.Any(size => filtrationDto.sizes.Contains(size)));
             }
 
             var result = await query.Skip((pageNumber-1) * pageSize)

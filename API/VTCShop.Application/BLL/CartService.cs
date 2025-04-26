@@ -41,7 +41,10 @@ namespace VTCShop.Application.BLL
             if (product == null)
                 throw new Exception("No such product found!");
 
-            if (product.SupportsSizes && !product.AvailableSizes.Contains(request.Size))
+            if (product.SupportsSizes && request.Size == null)
+                throw new Exception("Selected size is not available!");
+
+            if (product.SupportsSizes && !product.AvailableSizes.Contains(request.Size ?? SizeEnum.None))
                 throw new Exception("Selected size is not available!");
 
             cartItem = new UserCartItemEntity
@@ -49,7 +52,7 @@ namespace VTCShop.Application.BLL
                 UserId = userId,
                 ProductId = request.ProductId,
                 Quantity = request.Quantity,
-                ProductSize = product.SupportsSizes && product.AvailableSizes.Contains(request.Size) ? request.Size : SizeEnum.None
+                ProductSize = (product.SupportsSizes && product.AvailableSizes.Contains(request.Size ?? SizeEnum.None) ? request.Size : SizeEnum.None) ?? SizeEnum.None
             };
 
             await _context.UserCartItems.AddAsync(cartItem);

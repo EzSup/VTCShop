@@ -25,6 +25,7 @@ const Filter = ({
     4: "XL",
     5: "2XL",
     6: "3XL",
+    7: "4XL",
   };
 
   return (

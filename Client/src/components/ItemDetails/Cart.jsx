@@ -158,25 +158,31 @@ const CartSection = () => {
     4: "XL",
     5: "2XL",
     6: "3XL",
+    7: "4XL",
   };
 
   return (
     <section className="cart-section">
       <Title title="Дані для замовлення">{null}</Title>
       <div className="container">
-        <div className="user-data cart_part">
-          <form className="data" onSubmit={handleSubmitOrder}>
-            {containers.map((c, index) => (
-              <div className="inputbox" key={index}>
-                <label className="input-title p1">{c.title}</label>
-                <div>{c.children}</div>
-              </div>
-            ))}
-            <Button Width="100%" type="submit">
-              Підтвердити замовлення
-            </Button>
-          </form>
-        </div>
+        {cartItems.length > 0 ? (
+          <div className="user-data cart_part">
+            <form className="data" onSubmit={handleSubmitOrder}>
+              {containers.map((c, index) => (
+                <div className="inputbox" key={index}>
+                  <label className="input-title p1">{c.title}</label>
+                  <div>{c.children}</div>
+                </div>
+              ))}
+              <Button Width="100%" type="submit">
+                Підтвердити замовлення
+              </Button>
+            </form>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="cart-items cart_part">
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
@@ -235,7 +241,7 @@ const CartSection = () => {
         type="item_submit"
       >
         {modalText}
-      </Message>    
+      </Message>
     </section>
   );
 };
