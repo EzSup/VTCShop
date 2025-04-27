@@ -3,7 +3,7 @@ import Item from "../Items/Item";
 import { Loading, Button } from "../Components";
 import { useEffect, useState } from "react";
 import FiltersContainer from "./FiltersContainer";
-import SortContainer from "./SortContainer"
+import SortContainer from "./SortContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import useProducts from "./useProducts";
 import useCategories from "./useCategories";
@@ -27,7 +27,7 @@ const Shop = () => {
 
   useEffect(() => {
     setSortedProducts(products);
-  }, [products])
+  }, [products]);
 
   useEffect(() => {
     let sorted = [...products];
@@ -51,20 +51,20 @@ const Shop = () => {
     setSortType(newSort);
   };
 
-
   useEffect(() => {
     const fetchSizes = async () => {
       try {
         const response = await axiosInstance.post("/products/list", filters);
-        const allSizes = response.data.flatMap(product => product.availableSizes || []);
+        const allSizes = response.data.flatMap(
+          (product) => product.availableSizes || []
+        );
         const uniqueSizes = Array.from(new Set(allSizes)).sort((a, b) => a - b);
         setSizes(uniqueSizes);
-
       } catch (error) {
         console.error("Помилка при отриманні розмірів:", error);
       }
     };
-  
+
     fetchSizes();
   }, []);
 
@@ -120,7 +120,7 @@ const Shop = () => {
       </div>
       {products.length > 6 && (
         <Button className="items_more" Onclick={HandleButtonClick} Width={200}>
-          {isExpanded ? "Show Less" : "Show More"}
+          {isExpanded ? "Показати менше" : "Показати більше"}
         </Button>
       )}
     </section>

@@ -133,11 +133,11 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create New Product</DialogTitle>
+      <DialogTitle>Створити новий товар</DialogTitle>
       <DialogContent>
         <TextField
           fullWidth
-          label="Name"
+          label="Назва"
           name="name"
           value={formData.name}
           onChange={handleFormChange}
@@ -147,7 +147,7 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
         />
         <TextField
           fullWidth
-          label="Price"
+          label="Ціна"
           name="price"
           type="number"
           value={formData.price}
@@ -158,7 +158,7 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
         />
         <TextField
           fullWidth
-          label="Description"
+          label="Опис"
           name="description"
           multiline
           rows={4}
@@ -168,7 +168,7 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
         />
         <TextField
           fullWidth
-          label="Features"
+          label="Особливості"
           name="features"
           multiline
           rows={4}
@@ -177,12 +177,12 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
           margin="normal"
         />
         <FormControl fullWidth margin="normal">
-          <InputLabel id="category-select-label">Category</InputLabel>
+          <InputLabel id="category-select-label">Категорія</InputLabel>
           <Select
             labelId="category-select-label"
             name="categoryId"
             value={formData.categoryId || ""}
-            label="Category"
+            label="Категорія"
             onChange={handleFormChange}
           >
             {categories.map((category) => (
@@ -213,7 +213,7 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
             margin="normal"
             error={!!errors.availableSizes}
           >
-            <Typography variant="subtitle1">Available Sizes</Typography>
+            <Typography variant="subtitle1">Доступні розміри</Typography>
             <FormGroup row>
               {SIZE_OPTIONS.map((size) => (
                 <FormControlLabel
@@ -240,10 +240,10 @@ const CreateProduct = ({ open, onClose, onProductCreated }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="secondary">
-          Cancel
+          Відмінити
         </Button>
         <Button onClick={handleSubmit} color="primary" variant="contained">
-          Create
+          Створити
         </Button>
       </DialogActions>
     </Dialog>

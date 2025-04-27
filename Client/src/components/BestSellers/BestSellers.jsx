@@ -29,14 +29,12 @@ const ScrollContainer = () => {
   const { data: items, loading, error } = useBestSellers();
   const [bestSellers, setBestSellers] = useState([]);
 
-
   useEffect(() => {
-    if(items) {
+    if (items) {
       const rand = [...items].sort(() => Math.random() - 0.5);
-    setBestSellers(rand);
+      setBestSellers(rand);
     }
   }, [items]);
-  
 
   const handleScroll = useCallback(() => {
     updateThumbPosition();

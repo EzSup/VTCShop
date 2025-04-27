@@ -26,6 +26,7 @@ import {
   NativeSelect,
 } from "@mui/material";
 import CreateProduct from "./CreateProduct";
+import DeleteProduct from "./DeleteProduct";
 
 const SIZE_OPTIONS = [
   { value: 1, label: "S" },
@@ -42,6 +43,8 @@ const ProductManage = () => {
   const [imageFile, setImageFile] = useState(null);
   const [categories, setCategories] = useState([]);
   const [createWindowOpen, setCreateWindowOpen] = useState(false);
+  const [deleteWindowOpen, setDeleteWindowOpen] = useState(false);
+  const [rowToDeleteId, setRowToDeleteId] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "", role: "" });
 
@@ -54,7 +57,6 @@ const ProductManage = () => {
         sizes: [],
       })
       .then((result) => {
-        console.log(result.data);
         setTableData(result.data);
       })
       .catch((error) => {
@@ -75,7 +77,6 @@ const ProductManage = () => {
     axiosInstance
       .get(`products?id=${item.id}`)
       .then((result) => {
-        console.log(result.data);
         const product = result.data;
         setSelectedItem(product);
         setFormData({
@@ -86,7 +87,7 @@ const ProductManage = () => {
           supportsSizes: product.supportsSizes || false,
           availableSizes: product.availableSizes || [],
           features: product.features || "",
-          categoryId: product.categoryid || "",
+          categoryId: product.categoryId || 0,
         });
       })
       .catch((error) => {
@@ -110,10 +111,6 @@ const ProductManage = () => {
       formDataToUpload.append("image", file);
 
       const uploadUrl = `products/addImage?productId=${selectedItem.id}`;
-      console.log("Uploading image to:", uploadUrl);
-      console.log("Selected product ID:", selectedItem.id);
-      console.log("File details:", file.name, file.size);
-
       axiosInstance
         .patch(uploadUrl, formDataToUpload, {
           headers: {
@@ -121,7 +118,6 @@ const ProductManage = () => {
           },
         })
         .then((response) => {
-          console.log("Image upload response:", response.data);
           const newImageUrl = response.data;
           if (!newImageUrl) {
             throw new Error("No image URL returned from server");
@@ -182,7 +178,6 @@ const ProductManage = () => {
     axiosInstance
       .delete(`products?id=${id}`)
       .then((result) => {
-        alert("Успішно видалено!");
         setFormData({
           name: "",
           price: "",
@@ -197,6 +192,8 @@ const ProductManage = () => {
       .catch((error) => {
         alert(error.message);
       });
+    setRowToDeleteId(0);
+    setDeleteWindowOpen(false);
   };
 
   const updateProduct = (product) => {
@@ -224,10 +221,10 @@ const ProductManage = () => {
   };
 
   return (
-    <Grid container spacing={3} sx={{ height: "100%" }}>
-      <Grid item xs={12} md={8}>
+    <Grid container spacing={3} sx={{ height: "100%", width: "100%" }}>
+      <Grid item size={8}>
         <Typography variant="h5" gutterBottom>
-          Product Management
+          Керування товарами
         </Typography>
         <TableContainer
           component={Paper}
@@ -237,10 +234,9 @@ const ProductManage = () => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>Назва</TableCell>
+                <TableCell>Ціна</TableCell>
                 <TableCell>
-                  Buttons
                   <Button
                     variant="outlined"
                     color="success"
@@ -273,7 +269,9 @@ const ProductManage = () => {
                       color="error"
                       size="small"
                       sx={{ ml: 1 }}
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => {
+                        setRowToDeleteId(row.id), setDeleteWindowOpen(true);
+                      }}
                       startIcon={<DeleteIcon />}
                     >
                       Видалити
@@ -285,13 +283,18 @@ const ProductManage = () => {
           </Table>
         </TableContainer>
       </Grid>
-
       <CreateProduct
         open={createWindowOpen}
         onClose={() => setCreateWindowOpen(false)}
         onProductCreated={() => {}}
       />
-      <Grid item xs={12} md={4} maxWidth={500}>
+      <DeleteProduct
+        open={deleteWindowOpen}
+        onConfirm={() => handleDelete(rowToDeleteId)}
+        onCancel={() => setDeleteWindowOpen(false)}
+        message={`Ви впевнені що хочете видалити товар із ID ${rowToDeleteId}?`}
+      />
+      <Grid container size={4} maxWidth={500}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="h6" gutterBottom>
             {selectedItem ? "Редагувати продукт" : "Оберіть продукт"}
@@ -361,8 +364,8 @@ const ProductManage = () => {
                 <NativeSelect
                   labelId="category-select-label"
                   name="categoryId"
-                  defaultValue={formData.categoryid || ""}
                   label="Category"
+                  value={formData.categoryId}
                   onChange={handleFormChange}
                 >
                   {categories.map((category) => (

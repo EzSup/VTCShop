@@ -39,7 +39,7 @@ const FlexContainer = () => {
         <FlexWrap
           className={classes["row-reverse"]}
           title="Наші продукти"
-          source="https://mybucketezsup.s3.eu-north-1.amazonaws.com/Products/bf22b8afb6e04f52.png?X-Amz-Expires=3600&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXEFUNVYOGKL2NOFD%2F20250426%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20250426T105912Z&X-Amz-SignedHeaders=host&X-Amz-Signature=95299bd3c5f6bf4e6d1a9a83acb90ef88113d67db8e6b19d97d95f08006be2fb"
+          source="https://mybucketezsup.s3.eu-north-1.amazonaws.com/ChatGPT%20Image%20Apr%2026%2C%202025%2C%2010_55_34%20AM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAXEFUNVYOD2N63DEK%2F20250427%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20250427T082553Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiAHqselc14vF3YcwOYweE3iaJrtAOJf8Nj10vY7SR1eOAIge0M24P9P8Ut2%2FcrzMdTJbiQajomtOfMIU3OxLjEiMDgq2gIIWhAAGgw0OTAwMDQ2NTU2NDQiDHxangU6Ckkci6D2eiq3As17Xwnd5gilcsXcGg8Qv0ZXFonrLQ6CGhtjCB8kcUlyzXOeARZTVlB3vgbwPd4%2B1htWHnfVxrAvpZEg3mbJ1NZ8jaTyntF1UQIII5RJ9D%2BbdLyvjz439jIp5x5CiNaPzMUw3g%2Fw8h4RpWIKSui5w1HTye60ip3egCJBODeGKgQILgQDDrYtgSFMZ7IM%2FEUBOzKhqJslG9pOZ9niOYIysZr%2Bd80C%2FKMfrblbMDF5Ct%2BRqr%2FzogqO7NkAF8HfOXGE14p55fDEvW2sh0cD0H4E6aWtIL2bo0Bqv57OXI6WoJ43olBO2wwwnLnUSgb%2BbCkBwEWdwIPOGvyj2uptYyQQvZWDLBviD8l2zmF8yiB%2FMuiwOI0QXoqDvE%2FcCQMTNjWj%2FFA1dg%2BwcLTmmftVMyR9d6onEMu03m2UMInTt8AGOq4CM1HYQYLOGXXX8FfdAX69a0m4hLIXSzGu%2FdmoK3n3BuexFK7XigwOD2TBKLihyjYfzMZnTW6lT6C%2FeoD15eFgbiNSv9ECjQzymbZnOC%2FKeUN8coYhVVlToIxH4YpQfLdpPxYIOQ5%2BeG8xF6fMKRD%2BKytp1Qrej79pgWPI%2Bu3J2PamUkgdE47Qkwdij2uEhsmHaVG9iyUif3ydpxfD5lPdTkG7KrjcW%2BIW9gCzjlL5DvOhFeOpc7SMy9%2FGJG5diTjR1jyP4KIKu7r0YZT74XT%2FoEBrOQnDx8DO3wKewIS9UlU9%2B805%2BBMYq2HSOOtSX95RImivTAMRQGTwX5C8HSglrJXVshTFTFteNFMjVTLdwCle5kU88AR80HPh6qRRG40ubcHEqwd8KOmeZQQaJXY%3D&X-Amz-Signature=2b2a526f7a0feaec5d60e498856c2c082fc6e38994836780c46a3c386be0b60c&X-Amz-SignedHeaders=host&response-content-disposition=inline"
         >
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
             Ми пропонуємо широкий асортимент якісних товарів, створених
@@ -67,6 +67,13 @@ const FlexContainer = () => {
             житті. Наша мета – зробити кожен виріб особливим, щоб він став не
             просто річчю, а символом вашої гордості за Вінницький технічний
             коледж.
+          </Resp>
+          <Resp Class="b2" altClass="System S12_L20" Tag="p">
+            Ми віримо, що мерч ВТК — це більше, ніж просто речі. Це спосіб
+            об'єднати всіх, хто поділяє цінності, традиції та дух нашого
+            навчального закладу. Одяг і аксесуари з символікою коледжу надихають
+            на нові досягнення, підтримують командний дух і створюють відчуття
+            справжньої єдності, де б ви не були.
           </Resp>
         </FlexWrap>
       </div>

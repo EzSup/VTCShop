@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using VTCShop.Application.Contracts.Cart;
 using VTCShop.Application.DAL;
@@ -13,7 +14,7 @@ namespace VTCShop.Application.BLL
         {
             _context = context;
         }
-        
+
         public async Task<int> MakeOrder(int userId, OrderRequest orderRequest)
         {
             var cart = await _context.UserCartItems
@@ -43,6 +44,19 @@ namespace VTCShop.Application.BLL
             _context.UserCartItems.RemoveRange(cart);
             await _context.SaveChangesAsync();
             return orderEntity.Id;
+        }
+
+        public async Task<IEnumerable<OrderInListResponse>> GetAllOrders()
+        {
+            var result = await _context.Orders
+                                       .Include(x => x.UserEntity)
+                                       .Include(x => x.OrderItems)
+                                       .ThenInclude(oi => oi.ProductEntity)
+                                       .AsNoTracking()
+                                       .OrderByDescending(x => x.OrderDate)
+                                       .ToListAsync();
+            var mapped = result.Adapt<List<OrderInListResponse>>();
+            return mapped;
         }
     }
 }

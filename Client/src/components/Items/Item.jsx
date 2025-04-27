@@ -46,7 +46,7 @@ const Item = ({
             <div
               style={{
                 backgroundImage: `url(${imageLink})`,
-                backgroundSize: "cover",
+                backgroundSize: "contain",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
               }}

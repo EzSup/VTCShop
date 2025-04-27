@@ -64,10 +64,10 @@ const Header = () => {
           <div className="header-part right-part">
             <ul>
               {loggedin ? <HeaderHref Href="/cart/" Class="cart" /> : ""}
-              <HeaderHref
+              {/* <HeaderHref
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="search"
-              />
+              /> */}
               <HeaderHref
                 Href="/login/"
                 onClick={() => HandleShowModal("Error: Page Not Found")}

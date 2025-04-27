@@ -82,6 +82,7 @@ const CartSection = () => {
       title: "ПІБ",
       children: (
         <input
+          readOnly
           className="input"
           type="text"
           value={userData.fullName}
@@ -96,6 +97,7 @@ const CartSection = () => {
       title: "Email",
       children: (
         <input
+          readOnly
           className="input"
           type="email"
           value={userData.email}
@@ -104,20 +106,20 @@ const CartSection = () => {
         />
       ),
     },
-    {
-      title: "Номер телефону",
-      children: (
-        <input
-          className="input"
-          type="tel"
-          value={userData.phoneNumber}
-          onChange={(e) =>
-            setUserData({ ...userData, phoneNumber: e.target.value })
-          }
-          required
-        />
-      ),
-    },
+    // {
+    //   title: "Номер телефону",
+    //   children: (
+    //     <input
+    //       className="input"
+    //       type="tel"
+    //       value={userData.phoneNumber}
+    //       onChange={(e) =>
+    //         setUserData({ ...userData, phoneNumber: e.target.value })
+    //       }
+    //       required
+    //     />
+    //   ),
+    // },
     {
       title: "Адреса доставки",
       children: (

@@ -11,8 +11,7 @@ namespace VTCShop.Endpoints
         {
             var group = app.MapGroup("order")
                            .WithTags("Order management endpoints")
-                           .WithOpenApi()
-                           .RequireAuthorization("CustomerOnly");
+                           .WithOpenApi();
 
             group.BuildGroup();
         }
@@ -20,7 +19,10 @@ namespace VTCShop.Endpoints
         private static void BuildGroup(this RouteGroupBuilder group)
         {
             group.MapPost("", async (ClaimsPrincipal user, [FromServices]IOrderService orderService, OrderRequest request)
-                              => Results.Ok(await orderService.MakeOrder(user.GetUserId(), request)));
+                              => Results.Ok(await orderService.MakeOrder(user.GetUserId(), request))).RequireAuthorization("CustomerOnly");
+            group.MapGet("", async ([FromServices]IOrderService orderService)
+                             => Results.Ok(await orderService.GetAllOrders()))
+                 .Produces<IEnumerable<OrderInListResponse>>().RequireAuthorization("AdminOnly");
         }
     }
 }

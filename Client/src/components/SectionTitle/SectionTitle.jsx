@@ -21,7 +21,7 @@ const SectionTitle = ({
         ) : (
           <div className={classes["view-button"]}>
             <span onClick={() => useNavigate("/Collection")}>
-              <a className="p2">{children}</a>
+              {/* <a className="p2">{children}</a> */}
             </span>
           </div>
         )}

@@ -99,11 +99,13 @@ const LoginPage = () => {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
+                    placeholder="Ваше ім'я"
                   >
-                    Full Name
+                    Повне ім'я
                   </Input>
                 )}
                 <Input
+                  placeholder="Ваша пошта"
                   type="email"
                   name="email"
                   value={formData.email}
@@ -112,12 +114,13 @@ const LoginPage = () => {
                   Email
                 </Input>
                 <Input
+                  placeholder="Ваш пароль"
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                 >
-                  Password
+                  Пароль
                 </Input>
               </>
             )}
@@ -129,13 +132,13 @@ const LoginPage = () => {
                   Onclick={handleSubmit}
                   type="submit"
                 >
-                  Submit
+                  Підтвердити
                 </Button>
                 <Button
                   className="form_submit"
                   Onclick={() => setFormState("register")}
                 >
-                  Go To Registration
+                  До реєстрації
                 </Button>
               </>
             )}
@@ -147,26 +150,26 @@ const LoginPage = () => {
                   Onclick={handleRegister}
                   type="submit"
                 >
-                  Register
+                  Зареєструватись
                 </Button>
                 <Button
                   className="form_submit"
                   Onclick={() => setFormState("login")}
                 >
-                  Back to Login
+                  Повернутись до логіну
                 </Button>
               </>
             )}
 
             {formState === "logout" && (
               <>
-                <p>Are you sure you want to quit?</p>
+                <p>Ви впевнені що хочете вийти?</p>
                 <Button
                   className="form_submit"
                   Onclick={handleLogOut}
                   type="reset"
                 >
-                  Log Out
+                  Вийти за акаунту
                 </Button>
               </>
             )}

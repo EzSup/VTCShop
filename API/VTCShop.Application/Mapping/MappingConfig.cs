@@ -26,6 +26,17 @@ namespace VTCShop.Application.Mapping
                   .Map(dest => dest.Sum, src => src.Product.Price * src.Quantity)
                   .Map(dest => dest.ImageLink, src => src.Product.ImageKey)
                   .Map(dest => dest.Size, src => src.ProductSize);
+
+            config.NewConfig<OrderEntity, OrderInListResponse>()
+                  .Map(dest => dest.ShippingAddress, src => src.ShippingAddress)
+                  .Map(dest => dest.OrderDate, src => src.OrderDate)
+                  .Map(dest => dest.TotalAmount, src => src.TotalAmount)
+                  .Map(dest => dest.ContactEmail, src => src.UserEntity.Email)
+                  .Map(dest => dest.ContactName, src => src.UserEntity.FullName)
+                  .Map(dest => dest.Id, src => src.Id);
+
+            config.NewConfig<OrderItemEntity, OrderItemResponse>()
+                  .Map(dest => dest.ProductName, src => src.ProductEntity.Name);
         }
     }
 }

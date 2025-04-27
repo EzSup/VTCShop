@@ -106,33 +106,36 @@ const ItemDescription = ({ item }) => {
           <div className={`${titleClasses.arrow} arrow`}></div>
 
           {item.supportsSizes ? (
-            <div className="sizelist">
-              <div className="current_size">
-                <span className="System S12_L20 UpC"> розмір: </span>
-                <span className="p2">
-                  {selected != null ? sizeTitles[selected] : "—"}
-                </span>
+            <>
+              <div className="sizelist">
+                <div className="current_size">
+                  <span className="System S12_L20 UpC"> розмір: </span>
+                  <span className="p2">
+                    {selected != null ? sizeTitles[selected] : "—"}
+                  </span>
+                </div>
+                <div className="size_buttons">
+                  {Object.entries(sizeCodes).map(([id, code]) => {
+                    id = Number(id);
+                    const disabled = !available.includes(id);
+                    return (
+                      <Button
+                        key={id}
+                        className={`${disabled ? "sold" : ""} ${
+                          selected === id ? "clicked" : ""
+                        }`}
+                        Onclick={disabled ? null : () => setSelected(id)}
+                      >
+                        {code}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="size_buttons">
-                {Object.entries(sizeCodes).map(([id, code]) => {
-                  id = Number(id);
-                  const disabled = !available.includes(id);
-                  return (
-                    <Button
-                      key={id}
-                      className={`${disabled ? "sold" : ""} ${
-                        selected === id ? "clicked" : ""
-                      }`}
-                      Onclick={disabled ? null : () => setSelected(id)}
-                    >
-                      {code}
-                    </Button>
-                  );
-                })}
-              </div>
-            </div>
+              <div className={`${titleClasses.arrow} arrow`}></div>
+            </>
           ) : null}
-          <div className={`${titleClasses.arrow} arrow`}></div>
+
           <AddToCard
             item={item}
             sizeIdx={selected}

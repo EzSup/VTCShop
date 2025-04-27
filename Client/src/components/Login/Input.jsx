@@ -8,7 +8,9 @@ const Input = ({
 }) => {
   return (
     <div className="_input">
-      <label htmlFor={name}>{children}</label>
+      <label htmlFor={name} style={{ marginRight: "10px" }}>
+        {children}
+      </label>
       <input
         type={type}
         name={name}
