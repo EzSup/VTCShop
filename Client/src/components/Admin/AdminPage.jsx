@@ -59,9 +59,12 @@ const AdminPage = () => {
   };
 
   const handleItemClick = async (itemText) => {
-    switch (itemText) {
-      case "Вийти":
-        await handleLogOut();
+    if (itemText == "Вийти") {
+      await handleLogOut();
+    } else if (itemText == "Покупки") {
+      navigate("orders");
+    } else if (itemText == "Товари") {
+      navigate("products");
     }
   };
 

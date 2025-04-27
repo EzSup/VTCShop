@@ -8,6 +8,7 @@ import LoginPage from "./components/Login/LoginPage";
 import Cart from "./components/ItemDetails/Cart";
 import AdminPage from "./components/Admin/AdminPage";
 import ProductManage from "./components/Admin/ProductManage";
+import OrderManage from "./components/Admin/OrderManage";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/admin" element={<AdminPage />}>
           <Route index element={<ProductManage />} />
           <Route path="products" element={<ProductManage />} />
+          <Route path="orders" element={<OrderManage />} />
         </Route>
       </Routes>
     </Router>
