@@ -154,7 +154,7 @@ namespace VTCShop.Application.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.ApplicationUser", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.ApplicationUserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,7 +225,7 @@ namespace VTCShop.Application.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Category", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.CategoryEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,7 +249,7 @@ namespace VTCShop.Application.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Order", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,10 +261,6 @@ namespace VTCShop.Application.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ShippingAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -281,18 +277,15 @@ namespace VTCShop.Application.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderItem", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderItemEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductSize")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
@@ -301,16 +294,14 @@ namespace VTCShop.Application.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Product", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.ProductEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -318,17 +309,24 @@ namespace VTCShop.Application.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.PrimitiveCollection<int[]>("AvailableSizes")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("Features")
+                        .HasColumnType("text");
+
                     b.Property<string>("ImageKey")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsSellingFastMarked")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -338,14 +336,35 @@ namespace VTCShop.Application.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("integer");
+                    b.Property<bool>("SupportsSizes")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.UserCartItemEntity", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductSize")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("UserCartItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -359,7 +378,7 @@ namespace VTCShop.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUser", null)
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,7 +387,7 @@ namespace VTCShop.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUser", null)
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -383,7 +402,7 @@ namespace VTCShop.Application.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUser", null)
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -392,70 +411,89 @@ namespace VTCShop.Application.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUser", null)
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Order", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderEntity", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUser", "User")
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", "UserEntity")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderItem", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderItemEntity", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.Order", "Order")
+                    b.HasOne("VTCShop.Application.DAL.Models.OrderEntity", "OrderEntity")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VTCShop.Application.DAL.Models.Product", "Product")
+                    b.HasOne("VTCShop.Application.DAL.Models.ProductEntity", "ProductEntity")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("OrderEntity");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductEntity");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Product", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.ProductEntity", b =>
                 {
-                    b.HasOne("VTCShop.Application.DAL.Models.Category", "Category")
+                    b.HasOne("VTCShop.Application.DAL.Models.CategoryEntity", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.ApplicationUser", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.UserCartItemEntity", b =>
                 {
+                    b.HasOne("VTCShop.Application.DAL.Models.ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VTCShop.Application.DAL.Models.ApplicationUserEntity", "User")
+                        .WithMany("CartItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.ApplicationUserEntity", b =>
+                {
+                    b.Navigation("CartItems");
+
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Category", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.CategoryEntity", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Order", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.OrderEntity", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("VTCShop.Application.DAL.Models.Product", b =>
+            modelBuilder.Entity("VTCShop.Application.DAL.Models.ProductEntity", b =>
                 {
                     b.Navigation("OrderItems");
                 });

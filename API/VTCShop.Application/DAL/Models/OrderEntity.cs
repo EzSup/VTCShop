@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace VTCShop.Application.DAL.Models
 {
-    public class Order
+    public class OrderEntity
     {
         public int Id { get; set; }
 
@@ -13,11 +13,9 @@ namespace VTCShop.Application.DAL.Models
         [Required]
         public string ShippingAddress { get; set; }
 
-        public string Status { get; set; } = "Pending";
-
         public int UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public ApplicationUserEntity UserEntity { get; set; }
 
-        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public List<OrderItemEntity> OrderItems { get; set; } = new List<OrderItemEntity>();
     }
 }

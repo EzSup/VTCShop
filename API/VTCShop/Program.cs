@@ -1,9 +1,16 @@
+using Amazon;
+using Amazon.S3;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using VTCShop.Application.DAL;
+using VTCShop.Application.Mapping;
 using VTCShop.Endpoints;
 using VTCShop.Extensions;
+using VTCShop.Helpers;
+using VTCShop.Infrastructure.Options;
+using VTCShop.Infrastructure.Services;
 namespace VTCShop
 {
     public class Program
@@ -14,13 +21,38 @@ namespace VTCShop
 
             builder.Services.AddOpenApi();
             builder.Services.AddLoggingServices();
+            builder.Services.AddAntiforgery();
+
+            TypeAdapterConfig.GlobalSettings.Apply(new MappingConfig());
+
+            var constring = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddCustomAuthorization();
 
+            builder.Services.Configure<S3Options>(builder.Configuration.GetSection("AWS"));
+            builder.Services.AddScoped<IAmazonS3>(sp =>
+            {
+                return new AmazonS3Client(
+                    builder.Configuration["AWS:AccessKey"],
+                    builder.Configuration["AWS:SecretKey"],
+                    RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"]));
+            });
+
+            builder.Services.AddCors(x =>
+                                         x.AddDefaultPolicy(options =>
+                                                                options
+                                                                    .WithOrigins("http://localhost:5173", "http://localhost:3000")
+                                                                    .AllowAnyMethod()
+                                                                    .AllowAnyHeader()
+                                                                    .AllowCredentials()));
+
+            builder.Services.AddScoped<FileStorageRepository>();
             builder.Services.AddServices();
+
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
             var app = builder.Build();
 
@@ -30,20 +62,11 @@ namespace VTCShop
                 app.MapScalarApiReference();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
-
+            app.UseRouting();
             app.UseAuthentication();
-
-            app.Use(async (context, next) =>
-            {
-                var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Request Path: {Path}", context.Request.Path);
-                logger.LogInformation("IsAuthenticated: {IsAuthenticated}", context.User.Identity?.IsAuthenticated);
-                logger.LogInformation("Authentication Type: {AuthType}", context.User.Identity?.AuthenticationType);
-
-                await next();
-            });
-
             app.UseAuthorization();
 
             using (var scope = app.Services.CreateScope())
@@ -63,11 +86,11 @@ namespace VTCShop
                 }
             }
 
-            // app.MapIdentityApi<ApplicationUser>().WithOpenApi();
             app.MapProductEndpoint();
             app.MapCategoryEndpoint();
             app.MapAuthorizationEndpoint();
-
+            app.MapCartEndpoint();
+            app.MapOrderEndpoint();
 
             app.Run();
         }

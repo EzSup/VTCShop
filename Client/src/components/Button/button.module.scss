@@ -12,9 +12,11 @@
     position: relative;
     &:hover{
       transform: translateY(-2px);
+      background: #4297d7;
       opacity: 0.9;
       &::before{
         transform: translateY(4px);
+        background: #4297d7bb;
       }
     }
     &::before{

@@ -39,6 +39,7 @@
     }
     .preview-image div {
       background-size: 100% auto;
+      background-position: center;
     }
     .sizelist {
       display: none;
@@ -65,7 +66,7 @@
     .scrollbar {
       display: flex;
       width: 100%;
-      justify-content: space-between;
+      justify-content: start;
     }
   }
 }

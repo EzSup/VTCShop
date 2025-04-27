@@ -36,6 +36,7 @@
     .preview-image div {
       background-size: 100% auto;
       background-repeat: no-repeat;
+      background-position: center;
     }
     &:hover .hover_container {
       height: 70px;
@@ -141,6 +142,12 @@
   transition: all 0.75s;
   overflow: hidden;
   align-items: center;
+  &.quick_add {
+    .button,
+    button {
+      width: 100% !important;
+    }
+  }
 }
 
 .hover_container,
@@ -180,7 +187,7 @@
 @media screen and (max-width: 768px) {
   .item {
     min-width: 250px;
-    .description .button{
+    .description .button {
       display: block;
     }
     .preview {
@@ -191,14 +198,14 @@
       }
     }
   }
-  .hover_container{
+  .hover_container {
     display: none;
   }
 }
 
 @media screen and (max-width: 640px) {
   .item {
-    .hover_container{
+    .hover_container {
       display: none;
     }
     .product-tags {

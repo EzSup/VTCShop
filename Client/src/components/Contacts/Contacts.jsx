@@ -1,5 +1,5 @@
 import classes from "./contacts.module.scss";
-import {Resp} from "../Components.js"
+import { Resp } from "../Components.js";
 
 const Contacts = () => {
   return (
@@ -7,37 +7,69 @@ const Contacts = () => {
       <div className={classes.contacts_wrap}>
         <div className={classes.textBox}>
           <Resp Tag="p" Class="b1" altClass="S18_L26">
-            We appreciate your business and want to ensure you are satisfied
-            with your GOpure product! Please contact us with any questions you
-            have about the product, or if we can help you in any way.
+            Ми цінуємо ваш бізнес і хочемо, щоб ви були задоволені нашими
+            товарами! Будь ласка, зв'яжіться з нами, якщо у вас виникнуть
+            будь-які питання щодо продукту, або якщо ми можемо вам чимось
+            допомогти :)
           </Resp>
         </div>
         <Container
           className={classes.email}
-          image="/Dev_test-react/Contact/email1.svg" 
+          image="/Dev_test-react/Contact/email1.svg"
         >
-          <Resp Tag="p" Class="b2" altClass="p2">For customer support: </Resp>
-          <Resp Tag="a" Class="b2" altClass="p2" href="mailto:contact@gopurepod.com">
-            contact@gopurepod.com
+          <Resp Tag="p" Class="b2" altClass="p2">
+            Клієнтська підтримка:{" "}
           </Resp>
-          <Resp Tag="p" Class="b2" altClass="p2">For sales inquiries: </Resp>
-          <Resp Tag="a" Class="b2" altClass="p2" href="mailto:jim@blocenterprises.com">
-            jim@blocenterprises.com
+          <Resp
+            Tag="a"
+            Class="b2"
+            altClass="p2"
+            href="mailto:contact@gopurepod.com"
+          >
+            contact@vtcshop.com
           </Resp>
-          <Resp Tag="p" Class="b2" altClass="p2">For press inquiries: </Resp>
-          <Resp Tag="a" Class="b2" altClass="p2" href="mailto:info@blocenterprises.com">
-            info@blocenterprises.com
+          <Resp Tag="p" Class="b2" altClass="p2">
+            Для комерційних пропозицій:{" "}
+          </Resp>
+          <Resp
+            Tag="a"
+            Class="b2"
+            altClass="p2"
+            href="mailto:jim@blocenterprises.com"
+          >
+            jim@vtcshop.com
+          </Resp>
+          <Resp Tag="p" Class="b2" altClass="p2">
+            Для преси:{" "}
+          </Resp>
+          <Resp
+            Tag="a"
+            Class="b2"
+            altClass="p2"
+            href="mailto:info@blocenterprises.com"
+          >
+            info@vtcshop.com
           </Resp>
         </Container>
         <Container
           className={classes.adress}
           image="/Dev_test-react/Contact/adress.svg"
         >
-          <Resp Tag="p" Class="b2" altClass="p2">Mailing Address:</Resp>
-          <Resp Tag="a" href="https://maps.app.goo.gl/W4hFfYooXiB7aAoE6" Class="b2" altClass="p2" target="_blank">
-            Bloc Enterprises, LLC, 11 Grumman Hill Road, Suite 1A
+          <Resp Tag="p" Class="b2" altClass="p2">
+            Адреса для листів:
           </Resp>
-          <Resp Tag="p" Class="b2" altClass="p2">Wilton, CT 06897</Resp>
+          <Resp
+            Tag="a"
+            href="https://maps.app.goo.gl/RUeWabeuZnnF6tsx8"
+            Class="b2"
+            altClass="p2"
+            target="_blank"
+          >
+            вул, Хмельницьке шосе, 91/2, м. Вінниця, Вінницька область, Україна
+          </Resp>
+          <Resp Tag="p" Class="b2" altClass="p2">
+            21000
+          </Resp>
         </Container>
       </div>
     </section>

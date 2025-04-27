@@ -1,46 +1,30 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using VTCShop.Application.DAL.Configurations;
 using VTCShop.Application.DAL.Models;
 namespace VTCShop.Application.DAL
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    public class AppDbContext : IdentityDbContext<ApplicationUserEntity, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<OrderEntity> Orders { get; set; }
+        public DbSet<OrderItemEntity> OrderItems { get; set; }
+        public DbSet<UserCartItemEntity> UserCartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Category>()
-                        .HasIndex(c => c.Name)
-                        .IsUnique();
-
-            modelBuilder.Entity<Product>()
-                        .HasOne(p => p.Category)
-                        .WithMany(c => c.Products)
-                        .HasForeignKey(p => p.CategoryId);
-
-            modelBuilder.Entity<Order>()
-                        .HasOne(o => o.User)
-                        .WithMany(u => u.Orders)
-                        .HasForeignKey(o => o.UserId);
-
-            modelBuilder.Entity<OrderItem>()
-                        .HasOne(oi => oi.Order)
-                        .WithMany(o => o.OrderItems)
-                        .HasForeignKey(oi => oi.OrderId);
-
-            modelBuilder.Entity<OrderItem>()
-                        .HasOne(oi => oi.Product)
-                        .WithMany(p => p.OrderItems)
-                        .HasForeignKey(oi => oi.ProductId);
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCartItemConfiguration());
         }
     }
 }

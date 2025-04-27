@@ -3,7 +3,7 @@
   height: 700px;
   overflow: hidden;
   justify-content: center;
-  max-width: 1900px;
+  max-width: 1780px;
   margin: 0 auto;
   .wrap {
     display: flex;
@@ -24,6 +24,9 @@
       &::-webkit-scrollbar {
         display: none;
       }
+      & {
+        scrollbar-width: none;
+      }
       .items-wrap {
         display: flex;
       }
@@ -42,7 +45,7 @@
       height: 100%;
       width: 400px;
       max-width: 30%;
-      background-color: #605e5c;
+      background-color: #4297d7;
       border-radius: 6px;
       cursor: pointer;
       &::before {
@@ -52,15 +55,6 @@
         position: absolute;
         content: " ";
       }
-    }
-  }
-
-  @media screen and (min-width: 1840px) {
-    .scroll-container {
-      overflow: hidden !important;
-    }
-    .customScrollbar {
-      display: none;
     }
   }
 }

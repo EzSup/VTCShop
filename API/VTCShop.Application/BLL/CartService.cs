@@ -1,0 +1,118 @@
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
+using VTCShop.Application.Contracts.Cart;
+using VTCShop.Application.DAL;
+using VTCShop.Application.DAL.Models;
+using VTCShop.Application.DAL.Models.Enum;
+using VTCShop.Application.Domain.Services;
+using VTCShop.Infrastructure.Services;
+namespace VTCShop.Application.BLL
+{
+    public class CartService : ICartService
+    {
+        private readonly AppDbContext _context;
+        private readonly FileStorageRepository _fileStorageRepository;
+
+        public CartService(AppDbContext context, FileStorageRepository fileStorageRepository)
+        {
+            _context = context;
+            _fileStorageRepository = fileStorageRepository;
+        }
+
+        public async Task AddItemToCart(int userId, AddItemToCartRequest request)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            var cartItem = await _context.UserCartItems
+                                         .FirstOrDefaultAsync(x => x.UserId == userId
+                                                                   && x.ProductId == request.ProductId);
+
+            if (cartItem != null)
+            {
+                cartItem.Quantity += request.Quantity;
+                _context.UserCartItems.Update(cartItem);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            var product = await _context.Products.FindAsync(request.ProductId);
+            if (product == null)
+                throw new Exception("No such product found!");
+
+            if (product.SupportsSizes && request.Size == null)
+                throw new Exception("Selected size is not available!");
+
+            if (product.SupportsSizes && !product.AvailableSizes.Contains(request.Size ?? SizeEnum.None))
+                throw new Exception("Selected size is not available!");
+
+            cartItem = new UserCartItemEntity
+            {
+                UserId = userId,
+                ProductId = request.ProductId,
+                Quantity = request.Quantity,
+                ProductSize = (product.SupportsSizes && product.AvailableSizes.Contains(request.Size ?? SizeEnum.None) ? request.Size : SizeEnum.None) ?? SizeEnum.None
+            };
+
+            await _context.UserCartItems.AddAsync(cartItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveItemFromCart(int userId, int productId)
+        {
+            var cartItem = await _context.UserCartItems
+                                         .FirstOrDefaultAsync(x => x.UserId == userId
+                                                                   && x.ProductId == productId);
+            if (cartItem == null)
+                return;
+
+            _context.UserCartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateCartItemQuantity(int userId, int productId, int newQuantity)
+        {
+            var userCartItem = await _context.UserCartItems
+                                             .FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == productId);
+            if (userCartItem == null)
+                return;
+
+            userCartItem.Quantity = newQuantity;
+            _context.UserCartItems.Update(userCartItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<CartResponse> GetCart(int userId)
+        {
+            var items = await GetCartItems(userId);
+            var cart = new CartResponse
+            {
+                CartItems = items.ToArray(),
+                TotalPrice = items.Sum(x => x.Sum)
+            };
+            return cart;
+        }
+
+        private async Task<IEnumerable<CartItemResponse>> GetCartItems(int userId)
+        {
+            var result = await _context.UserCartItems
+                                       .AsNoTracking()
+                                       .Include(x => x.Product)
+                                       .ThenInclude(x => x.Category)
+                                       .Where(x => x.UserId == userId)
+                                       .ToListAsync();
+
+            foreach (var item in result)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Product.ImageKey))
+                {
+                    item.Product.ImageKey = await _fileStorageRepository.GetObjectTempUrlAsync(item.Product.ImageKey);
+                }
+            }
+
+            var mapped = result.Adapt<IEnumerable<CartItemResponse>>();
+            return mapped;
+        }
+    }
+}

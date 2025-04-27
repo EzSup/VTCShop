@@ -1,6 +1,6 @@
 import classes from "./button.module.scss";
 
-const Button = ({ children, Width, Onclick, className = "" }) => {
+const Button = ({type= "button", children, Width, Onclick, className = "" }) => {
   return (
     <div className={`${classes.button} button ${className}`}>
       <button
@@ -8,6 +8,7 @@ const Button = ({ children, Width, Onclick, className = "" }) => {
         style={{ width: Width }}
         onClick={Onclick}
         title={className}
+        type={type}
       >
         {children}
       </button>

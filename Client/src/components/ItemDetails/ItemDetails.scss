@@ -2,7 +2,7 @@
 @import "../Items/Item.scss";
 
 .Item_details {
-  margin: 130px auto 0;
+  margin: 130px auto 50px;
   height: 580px;
   max-width: 1900px;
   width: 100%;
@@ -24,8 +24,8 @@
   flex-direction: row-reverse;
   justify-content: flex-start;
   .preview {
-    width: 82%;
-    max-width: 400px;
+    width: 90%;
+    //max-width: 400px;
     padding-left: 3%;
     .item {
       margin: 0;
@@ -182,6 +182,10 @@
       height: 48px;
       display: flex;
       align-items: center;
+      transition: all 0.5s;
+      &.disabled {
+        border: 1px solid #e3e3e3;
+      }
       .change_count {
         border: 0px;
         padding: 0px 10px;
@@ -370,18 +374,18 @@
   }
 }
 @media screen and (max-width: 730px) {
-  .photos_frame{
-    .preview{
+  .photos_frame {
+    .preview {
       width: 40%;
       min-width: 275px;
-      .item .preview{
+      .item .preview {
         width: 100%;
       }
     }
-    .item .item-wrap{
+    .item .item-wrap {
       flex-direction: row-reverse;
     }
-  } 
+  }
   .Item_details .details_wrap .photos_frame {
     .other_photos {
       height: 100%;
@@ -424,20 +428,21 @@
       }
     }
   }
-  .Item_details .details_wrap .description_frame{
+  .Item_details .details_wrap .description_frame {
     width: 100%;
     height: 330px;
-    .container{
+    .container {
       flex-direction: row;
       justify-content: space-between;
       height: 100%;
-      .main_item_content, .details{
+      .main_item_content,
+      .details {
         width: 48%;
       }
     }
   }
-  .main_item_content{
-    .sizelist .size_buttons .button{
+  .main_item_content {
+    .sizelist .size_buttons .button {
       margin: 0px 2px;
       width: 35px;
       height: 35px;

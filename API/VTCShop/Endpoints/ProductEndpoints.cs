@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using VTCShop.Application.Domain.Services;
+using VTCShop.Application.DTOs;
 using VTCShop.Contracts;
 namespace VTCShop.Endpoints
 {
@@ -22,14 +24,44 @@ namespace VTCShop.Endpoints
                      var result = await productService.GetById(id);
                      return Results.Ok(result);
                  })
-                 .Produces<ProductInListResponse>();
+                 .Produces<ProductResponse>();
 
-            group.MapGet("/list", async (IProductService productService, int pageNumber, int pageSize) =>
+            group.MapGet("bestSellers", async (IProductService service, [FromQuery]int? count) => await service.GetBestSellersAsync((count ?? 0) > 0 ? (int)count : 10));
+
+            group.MapPost("/list", async ([FromServices]IProductService productService, [FromQuery]int? pageNumber, [FromQuery]int? pageSize, [FromBody]PersonFiltrationDTO filtrationDto) =>
                  {
-                     var result = await productService.GetPaged(pageNumber, pageSize);
+                     var result = await productService.GetFiltered(pageNumber ?? 1, pageSize ?? 10, filtrationDto);
+                     return Results.Ok(result.ToArray());
+                 })
+                 .Produces<ProductInListResponse[]>();
+
+            group.MapPost("", async (IProductService productService, ProductCreateRequest request) =>
+                 {
+                     var result = await productService.Create(request);
                      return Results.Ok(result);
                  })
-                 .Produces<IEnumerable<ProductInListResponse>>();
+                 .Produces<int>()
+                 .RequireAuthorization("AdminOnly");
+
+            group.MapPut("", async (IProductService productService, ProductUpdateRequest request) =>
+            {
+                await productService.Update(request);
+                return Results.Ok();
+            }).RequireAuthorization("AdminOnly");
+
+            group.MapPatch("addImage", async (IProductService productService, int productId, [FromForm]IFormFile image) =>
+                 {
+                     return Results.Ok(await productService.UpdateImage(productId, image));
+                 })
+                 .DisableAntiforgery()
+                 .RequireAuthorization("AdminOnly")
+                 .Produces<string>();
+
+            group.MapDelete("", async (IProductService productService, int id) =>
+            {
+                await productService.Delete(id);
+                return Results.Ok();
+            }).RequireAuthorization("AdminOnly");
 
             return group;
         }

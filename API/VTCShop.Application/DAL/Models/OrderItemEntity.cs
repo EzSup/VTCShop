@@ -1,15 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using VTCShop.Application.DAL.Models.Enum;
 namespace VTCShop.Application.DAL.Models
 {
-    public class OrderItem
+    public class OrderItemEntity
     {
-        public int Id { get; set; }
-
         public int OrderId { get; set; }
-        public Order Order { get; set; }
+        public OrderEntity OrderEntity { get; set; }
 
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public SizeEnum ProductSize { get; set; }
+        public ProductEntity ProductEntity { get; set; }
 
         [Range(1, 1000)]
         public int Quantity { get; set; }

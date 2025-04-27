@@ -24,6 +24,7 @@ namespace VTCShop.Application.BLL
         public async Task<IEnumerable<CategoryResponse>> GetCategories(int pageSize, int pageNumber)
         {
             var result = await _context.Categories
+                                       .AsNoTracking()
                                        .Skip(pageSize * (pageNumber-1))
                                        .Take(pageSize)
                                        .ToListAsync();
@@ -33,7 +34,7 @@ namespace VTCShop.Application.BLL
 
         public async Task<int> Create(CategoryCreateRequest request)
         {
-            var entity = request.Adapt<Category>();
+            var entity = request.Adapt<CategoryEntity>();
             await _context.Categories.AddAsync(entity);
             return await _context.SaveChangesAsync();
         }
@@ -47,7 +48,7 @@ namespace VTCShop.Application.BLL
 
         public async Task Update(CategoryUpdateRequest request)
         {
-            var entity = request.Adapt<Category>();
+            var entity = request.Adapt<CategoryEntity>();
             _context.Categories.Update(entity);
             await _context.SaveChangesAsync();
         }

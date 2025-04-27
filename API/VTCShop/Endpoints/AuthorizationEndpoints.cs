@@ -1,7 +1,9 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using VTCShop.Application.Contracts.Auth;
 using VTCShop.Application.DAL.Models;
+using VTCShop.Application.Helpers;
 namespace VTCShop.Endpoints
 {
     public static class AuthorizationEndpoints
@@ -19,11 +21,11 @@ namespace VTCShop.Endpoints
 
         private static void BuildGroup(this RouteGroupBuilder group)
         {
-            group.MapPost("register", async (UserManager<ApplicationUser> userManager,
-                              SignInManager<ApplicationUser> signInManager,
+            group.MapPost("register", async (UserManager<ApplicationUserEntity> userManager,
+                              SignInManager<ApplicationUserEntity> signInManager,
                               RegisterRequest request) =>
                           {
-                              var user = request.Adapt<ApplicationUser>();
+                              var user = request.Adapt<ApplicationUserEntity>();
                               user.UserName = request.Email;
                               var registerResult = await userManager.CreateAsync(user, request.Password);
 
@@ -37,8 +39,8 @@ namespace VTCShop.Endpoints
                               return Results.BadRequest(registerResult.Errors);
                           });
 
-            group.MapPost("login", async (UserManager<ApplicationUser> userManager,
-                              SignInManager<ApplicationUser> signInManager,
+            group.MapPost("login", async (UserManager<ApplicationUserEntity> userManager,
+                              SignInManager<ApplicationUserEntity> signInManager,
                               LogInRequest request) =>
                           {
                               var user = await userManager.FindByEmailAsync(request.Username);
@@ -46,18 +48,27 @@ namespace VTCShop.Endpoints
 
                               if (result)
                               {
-                                  await signInManager.SignInAsync(user, false);
-                                  return Results.Ok($"User {user.Email} registered successfully logged in!");
+                                  await signInManager.SignInAsync(user, true);
+                                  return Results.Ok(new LogInResponse(user.UserName == "admin", user.UserName));
                               }
 
                               return Results.BadRequest("Unsuccessful login attempt.");
-                          });
+                          }).Produces<LogInResponse>();
 
-            group.MapDelete("logout", async (SignInManager<ApplicationUser> signInManager) =>
+            group.MapDelete("logout", async (SignInManager<ApplicationUserEntity> signInManager) =>
             {
                 await signInManager.SignOutAsync();
                 return Results.Ok("User logged out successfully!");
             }).RequireAuthorization();
+
+            group.MapGet("me", async (ClaimsPrincipal User, UserManager<ApplicationUserEntity> userManager) =>
+                 {
+                     var id = User.GetUserId();
+                     var userData = await userManager.FindByIdAsync(id.ToString());
+                     return Results.Ok(userData.Adapt<MeResponse>());
+                 })
+                 .RequireAuthorization()
+                 .Produces<MeResponse>();
         }
     }
 }

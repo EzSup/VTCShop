@@ -1,61 +1,89 @@
-import React, { useState, useEffect } from "react";
-import { DropdownContainer, Button } from "../Components";
-import GetData from "../GetData";
+import React, { useEffect, useState } from "react";
+import { DropdownContainer } from "../Components";
+import axiosInstance from "../AxiosInstance";
 
-const PriceFilter = ({ updateFilter, isOpen, onToggle, title }) => {
-  const { items: diapasone, loading } = GetData({ name: "items" });
-
-  const calculateDiscountedPrice = (price, discount) => {
-    if (!discount) return Math.round(price);
-    return Math.round(price - price * (discount / 100));
-  };
-
-  const discountedPrices = diapasone.map((item) =>
-    calculateDiscountedPrice(item.price, item.discount)
-  );
-
-  const minPrice = Math.min(...discountedPrices);
-  const maxPrice = Math.max(...discountedPrices);
-  const [price, setPrice] = useState(maxPrice);
+const PriceFilter = ({
+  isOpen,
+  title,
+  minPrice: propMin,
+  maxPrice: propMax,
+  onChange,
+  onToggle,
+}) => {
+  const [minPrice, setMinPrice] = useState(propMin ?? 0);
+  const [maxPrice, setMaxPrice] = useState(propMax ?? 0);
+  const [price, setPrice] = useState(propMax ?? 0);
+  const [loading, setLoading] = useState(propMin == null || propMax == null);
 
   useEffect(() => {
-    if (!loading && diapasone.length > 0) {
-      setPrice(maxPrice);
-    }
-  }, [loading, maxPrice]);
+    const fetchAllProducts = async () => {
+      if (propMin != null && propMax != null) return;
 
-  const handlePriceChange = (e) => {
-    const newPrice = Number(e.target.value);
-    setPrice(newPrice);
-  };
+      try {
+        const res = await axiosInstance.post("/products/list", {});
+        const products = res.data;
 
-  const handleSubmit = () => {
-    updateFilter("price", price);
-  };
+        if (products.length) {
+          const prices = products.map((p) =>
+            p.discount
+              ? Math.round(p.price - p.price * (p.discount / 100))
+              : Math.round(p.price)
+          );
+
+          const min = Math.min(...prices);
+          const max = Math.max(...prices);
+
+          setMinPrice(min);
+          setMaxPrice(max);
+          setPrice(max);
+        }
+      } catch (err) {
+        console.error("Failed to fetch products for price filter:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllProducts();
+  }, [propMin, propMax]);
+
+  const handlePriceChange = (e) => setPrice(Number(e.target.value));
+
+  const handleSubmit = () => onChange?.({ minPrice, maxPrice: price });
 
   const handleReset = () => {
     setPrice(maxPrice);
-    updateFilter("price", maxPrice);
-  }
+    onChange?.({ minPrice, maxPrice });
+  };
 
   return (
-    <DropdownContainer title={title} onToggle={onToggle} isOpen={isOpen}>
+    <DropdownContainer title={title} isOpen={isOpen} onToggle={onToggle}>
       <div className="list-head price">
         <div className="part reset" onClick={handleReset}>
-          Reset
+          Очистити
         </div>
       </div>
-      <div className="checkboxes">
-        <input
-          type="range"
-          min={minPrice}
-          max={maxPrice}
-          value={price}
-          onChange={handlePriceChange}
-        />
-        <p className="b2">Selected Price: {price}</p>
-        <button onClick={handleSubmit} className="pargraph default submit-button">Submit</button>
-      </div>
+
+      {loading ? (
+        <p className="b2">Завантаження…</p>
+      ) : (
+        <div className="checkboxes">
+          <input
+            type="range"
+            min={minPrice}
+            max={maxPrice}
+            value={price}
+            onChange={handlePriceChange}
+          />
+          <p className="b2">Обрана ціна: {price}₴</p>
+          <button
+            onClick={handleSubmit}
+            className="pargraph default submit-button"
+          >
+            Submit
+          </button>
+        </div>
+      )}
     </DropdownContainer>
   );
 };

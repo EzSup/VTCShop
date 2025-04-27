@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 namespace VTCShop.Application.DAL.Models
 {
-    public class ApplicationUser : IdentityUser<int>
+    public class ApplicationUserEntity : IdentityUser<int>
     {
         [StringLength(50)]
         public string? FullName { get; set; }
 
-        public List<Order> Orders { get; set; } = new List<Order>();
+        public List<UserCartItemEntity> CartItems { get; set; }
+        public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
     }
 }

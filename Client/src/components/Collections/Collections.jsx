@@ -3,8 +3,8 @@ import "./Collections.scss";
 import { useState, useEffect } from "react";
 
 const Collections = () => {
-  const [beforeItemPos, setBeforeItemPos] = useState(0.9);
-  const [streakPos, setStreakPos] = useState(0.9);
+  const [beforeItemPos, setBeforeItemPos] = useState(0.87);
+  const [streakPos, setStreakPos] = useState(0.87);
   const [isDragging, setIsDragging] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -20,8 +20,8 @@ const Collections = () => {
     if (!isDragging) return;
     const clientX = e.type === "mousemove" ? e.clientX : e.touches[0].clientX;
     const streakPosition = clientX / window.innerWidth;
-    setBeforeItemPos(Math.max(0.1, Math.min(0.9, streakPosition)));
-    setStreakPos(Math.max(0.1, Math.min(0.9, streakPosition)));
+    setBeforeItemPos(Math.max(0.1, Math.min(0.87, streakPosition)));
+    setStreakPos(Math.max(0.1, Math.min(0.87, streakPosition)));
   };
 
   const handleMouseOrTouchUp = () => {
@@ -52,17 +52,17 @@ const Collections = () => {
   return (
     <section className="collections">
       <div className="wrap">
-        <Title Strong title="Compare in different size">
+        <Title Strong title="Спробуйте різні розміри">
           <div className="tabs_container">
             <div className="tabs">
               <Tab isActive={activeTab === 0} onClick={() => handleTabClick(0)}>
-                Medium
+                Середній
               </Tab>
               <Tab isActive={activeTab === 1} onClick={() => handleTabClick(1)}>
-                Large
+                Великий
               </Tab>
               <Tab isActive={activeTab === 2} onClick={() => handleTabClick(2)}>
-                X-Large
+                Потужний
               </Tab>
             </div>
           </div>
@@ -105,11 +105,11 @@ const Before = ({ Style }) => {
   return (
     <div className="before" style={Style}>
       <div className="title">
-        <h5 className="S24_L32 Bold">Other Brands</h5>
+        <h5 className="S24_L32 Bold">Інші бренди</h5>
       </div>
       <div className="image">
         <img
-          src="/Dev_test-react/Collections/OtherBrands.png"
+          src="src\assets\Collections\OtherBrands.png"
           draggable="false"
           alt=""
         />
@@ -126,7 +126,7 @@ const After = () => {
       </div>
       <div className="image">
         <img
-          src="/Dev_test-react/Collections/Focused.png"
+          src="src\assets\Collections\Focused.png"
           draggable="false"
           alt=""
         />

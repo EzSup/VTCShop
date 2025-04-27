@@ -2,10 +2,17 @@ import { useState, useEffect } from "react";
 import "./header.scss";
 import { Message } from "../Components";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [loggedin, setLoggedin] = useState();
+
+  useEffect(() => {
+    setLoggedin(isLoggedIn);
+  }, [isLoggedIn]);
 
   const HandleShowModal = (text) => {
     setModalText(text);
@@ -30,31 +37,25 @@ const Header = () => {
 
   return (
     <header className="header-with_promo">
-      <PromoDiv />
       <div className="header">
         <div className="wrap">
           <div className="header-part left-part">
             {!isMobile ? (
               <ul>
-                <HeaderHref Href="/Collection?type=long-sleeve" Class="p2">
-                  Crew Necks
+                <HeaderHref Href="/About/" Class="p2">
+                  Про нас
                 </HeaderHref>
-                <HeaderHref Href="/Collection?type=t-short" Class="p2">
-                  V-Necks
+                <HeaderHref Href="/Contacts/" Class="p2">
+                  Зв'язатись
                 </HeaderHref>
-                <HeaderHref
-                  Href="/Collection?type=long-sleeve%2Ct-short"
-                  Class="p2"
-                >
-                  Activewear
+                <HeaderHref Href="/Collection/" Class="p2">
+                  Колекція
                 </HeaderHref>
-                <HeaderHref Href="/Collection?color=other" Class="p2">
-                  Bundles
-                </HeaderHref>
-                <MoreDiv Class="p2" />
               </ul>
             ) : (
-              <BurgerMenu OnClick = {() => HandleShowModal("Error: Page Not Found")}/>
+              <BurgerMenu
+                OnClick={() => HandleShowModal("Error: Page Not Found")}
+              />
             )}
           </div>
           <div className="nav_logo">
@@ -62,12 +63,13 @@ const Header = () => {
           </div>
           <div className="header-part right-part">
             <ul>
-              <HeaderHref Href="/Collection/" Class="cart" />
-              <HeaderHref
+              {loggedin ? <HeaderHref Href="/cart/" Class="cart" /> : ""}
+              {/* <HeaderHref
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="search"
-              />
+              /> */}
               <HeaderHref
+                Href="/login/"
                 onClick={() => HandleShowModal("Error: Page Not Found")}
                 Class="user"
               />
@@ -157,7 +159,7 @@ const MoreDiv = ({ Class }) => {
         >
           <path
             d="M16.5 1L9 8.5L1.5 1"
-            stroke="#212322"
+            stroke="#4297d7"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -167,13 +169,13 @@ const MoreDiv = ({ Class }) => {
       <div className={`more ${!hidden ? "shown" : ""}`}>
         <div className="list">
           <Link to="/About/" className={Class}>
-            About Us
+            Про нас
           </Link>
           <Link to="/Contacts/" className={Class}>
-            Contact Us
+            Зв'язатись
           </Link>
           <Link to="/Collection/" className={Class}>
-            Collection
+            Колекція
           </Link>
         </div>
       </div>
@@ -195,34 +197,19 @@ const BurgerMenu = ({ OnClick }) => {
       >
         <div className="burger"></div>
         <ul className="burger_list">
-          <HeaderHref Href="/Collection?type=long-sleeve" Class="p2">
-            Crew Necks
-          </HeaderHref>
-          <HeaderHref Href="/Collection?type=t-short" Class="p2">
-            V-Necks
-          </HeaderHref>
-          <HeaderHref Href="/Collection?type=long-sleeve%2Ct-short" Class="p2">
-            Activewear
-          </HeaderHref>
-          <HeaderHref Href="/Collection?color=other" Class="p2">
-            Bundles
-          </HeaderHref>
           <HeaderHref Href="/About/" Class="p2">
-            About Us
+            Про нас
           </HeaderHref>
           <HeaderHref Href="/Contacts/" Class="p2">
-            Contact Us
+            Зв'язатись
           </HeaderHref>
           <HeaderHref Href="/Collection/" Class="p2">
-            Collection
+            Колекція
           </HeaderHref>
         </ul>
       </div>
       <ul>
-      <HeaderHref
-        onClick={OnClick}
-        Class="search"
-      />
+        <HeaderHref onClick={OnClick} Class="search" />
       </ul>
     </>
   );

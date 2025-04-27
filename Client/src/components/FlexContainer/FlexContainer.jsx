@@ -7,59 +7,73 @@ const FlexContainer = () => {
       <div className={classes.AboutUs_Frame}>
         <FlexWrap
           className={classes.row}
-          title="Our Company"
-          source="/Dev_test-react/AboutUs/photos_right.png"
+          title="Про нас"
+          source="https://vtc.vn.ua/images/logos/raster/logo_white_with_blue_bg.png"
         >
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
-            GOpure was launched by Bloc Enterprises, a specialized distribution
-            & marketing company introducing consumer products distinguished by
-            innovation, technology and disruptive solutions to everyday problems
-            that improve the health and well-being of people and pets. The
-            company strives to practice sustainability principles in all
-            operations and be a good steward of the earth.
+            Вінницький технічний фаховий коледж – це заклад із багатою історією,
+            який здобув широку популярність завдяки високій якості освіти та
+            інноваційному підходу. Щороку сотні абітурієнтів обирають наш
+            коледж, прагнучи стати частиною його дружньої та амбітної спільноти.
+            Наші студенти пишаються тим, що навчаються тут, адже це не лише
+            можливість отримати престижну освіту, а й шанс долучитися до
+            традицій, що об’єднують покоління.
           </Resp>
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
-            Like many amazing innovations, the inspiration for the GOpure Pod
-            happened the instant its inventor in Ireland was determined to find
-            a better solution after removing many dozens of used plastic water
-            bottles from his car, most over half full. He was ashamed and
-            disgusted by this wasteful consumption and inefficiency so he sought
-            out world-renowned microbiologist, Dr Ronald Russell at Trinity
-            College in Dublin, to help realize his vision of introducing a
-            portable water purifier for everyday use and eliminate the need for
-            single use plastic water bottles.
+            Мрія про власний мерч коледжу жила в серцях студентів і випускників
+            багато років. Ми вирішили втілити її в життя, створивши колекцію,
+            яка відображає дух нашого закладу – сучасність, єдність і гордість.
+            Кожен елемент мерчу покликаний підкреслити унікальність Вінницького
+            технічного коледжу та стати символом приналежності до нашої великої
+            родини.
+          </Resp>
+          <Resp Class="b2" altClass="System S12_L20" Tag="p">
+            Цей проєкт – більше, ніж просто створення одягу чи аксесуарів. Це
+            спосіб згуртувати нашу спільноту, дати студентам і випускникам
+            можливість висловити свою любов до коледжу через стильні та якісні
+            речі. Ми віримо, що наш мерч стане не лише частиною гардеробу, а й
+            джерелом натхнення та гордості для всіх, хто пов’язаний із
+            Вінницьким технічним фаховим коледжем.
           </Resp>
         </FlexWrap>
         <FlexWrap
           className={classes["row-reverse"]}
-          title="About PuriBloc"
-          source="/Dev_test-react/AboutUs/photos_left.png"
+          title="Наші продукти"
+          source="https://mybucketezsup.s3.eu-north-1.amazonaws.com/Products/6312f53313634d4d.png?X-Amz-Expires=3600&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXEFUNVYOGKL2NOFD%2F20250427%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20250427T095628Z&X-Amz-SignedHeaders=host&X-Amz-Signature=2a842de95c5c73dcbc9d99ada0f65fb095e811db9f03ad5966aef011079295d6"
         >
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
-            PuriBloc is the innovative water purification, preservation
-            technology inside GOpure, a portable, environmentally friendly Pod
-            that keeps drinking water clean and safe, while also greatly
-            improving taste. Within seconds, contaminants found in ordinary tap
-            water are neutralized and the pH balance is optimized for healthy
-            hydration. Unlike carbon water filters that only work once, PuriBloc
-            technology works continuously through a natural process known as
-            ionic exchange and keeps pure water fresh and great tasting for
-            months.
+            Ми пропонуємо широкий асортимент якісних товарів, створених
+            спеціально для студентів і шанувальників Вінницького технічного
+            коледжу: стильні худі, зручні футболки, практична канцелярія та
+            оригінальні аксесуари. Кожен виріб виготовлений із високоякісних
+            матеріалів, що забезпечують комфорт і довговічність. Наші дизайни
+            поєднують сучасні тренди з унікальною символікою коледжу, щоб ви
+            могли з гордістю демонструвати свою приналежність до нашої
+            спільноти.
           </Resp>
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
-            The adsorptive power of GOpure’s advanced microporous ceramic core
-            is mind-boggling due to the enormous surface area for its volume
-            with which water can react. This high porosity surface area carries
-            millions of negatively charged binding sites, which attract and
-            adsorb heavy metals along with other chemical or organic impurities,
-            including bacteria.
+            Процес виготовлення нашого мерчу продуманий до найменших деталей. Ми
+            співпрацюємо з перевіреними виробниками, які використовують сучасні
+            технології друку та пошиття, щоб гарантувати бездоганну якість.
+            Кожен етап – від розробки дизайну до пакування – проходить суворий
+            контроль, адже ми прагнемо, щоб наші продукти не лише радували око,
+            а й служили вам довгі роки.
           </Resp>
           <Resp Class="b2" altClass="System S12_L20" Tag="p">
-            The GOpure Pod is changing the way the world drinks water by
-            continually purifying and enhancing your drinking water on the go
-            while also helping to save our planet: using one GOpure Pod in a
-            personal re-usable bottle replaces 2,000 single-use water bottles
-            with zero plastic waste.
+            Окрім цього, ми постійно вдосконалюємо наш асортимент, додаючи нові
+            ідеї та продукти, що відповідають потребам і бажанням нашої
+            спільноти. Ми враховуємо відгуки студентів, щоб створювати мерч,
+            який не лише виглядає стильно, а й є практичним у повсякденному
+            житті. Наша мета – зробити кожен виріб особливим, щоб він став не
+            просто річчю, а символом вашої гордості за Вінницький технічний
+            коледж.
+          </Resp>
+          <Resp Class="b2" altClass="System S12_L20" Tag="p">
+            Ми віримо, що мерч ВТК — це більше, ніж просто речі. Це спосіб
+            об'єднати всіх, хто поділяє цінності, традиції та дух нашого
+            навчального закладу. Одяг і аксесуари з символікою коледжу надихають
+            на нові досягнення, підтримують командний дух і створюють відчуття
+            справжньої єдності, де б ви не були.
           </Resp>
         </FlexWrap>
       </div>
@@ -81,7 +95,9 @@ const TextBlock = ({ title, children }) => {
   return (
     <div className={classes.TextBlock}>
       <div className={classes.title}>
-        <Resp Tag="h2" Class="Headline" altClass="Headline S24_L32">{title}</Resp>
+        <Resp Tag="h2" Class="Headline" altClass="Headline S24_L32">
+          {title}
+        </Resp>
       </div>
       <div className={classes.content}>{children}</div>
     </div>
