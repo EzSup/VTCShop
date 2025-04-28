@@ -42,7 +42,7 @@ The API will start at https://localhost:5000 or 5001 (or another port specified 
 
 ### 3. Navigate to the Client folder
 ```bash
-cd API
+cd Client
 ```
 
 ### 4. Run the frontend
