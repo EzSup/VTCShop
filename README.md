@@ -30,7 +30,7 @@ To run the project, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/order-management-system.git
+git clone https://github.com/EzSup/VTCShop.git
 cd API
 ```
 ### 2. Run the API
